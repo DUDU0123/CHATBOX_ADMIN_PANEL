@@ -10,17 +10,10 @@ class AdminLoginPage extends StatefulWidget {
 }
 
 class _AdminLoginPageState extends State<AdminLoginPage> {
-  final TextEditingController emailController = TextEditingController();
-
-  final TextEditingController passwordController = TextEditingController();
-
-  final TextEditingController forgotPasswordController =
-      TextEditingController();
+  final TextEditingController phoneNumberController = TextEditingController();
   @override
   void dispose() {
-    emailController.dispose();
-    passwordController.dispose();
-    forgotPasswordController.dispose();
+    phoneNumberController.dispose();
     super.dispose();
   }
 
@@ -35,9 +28,7 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
               constraints: BoxConstraints(minHeight: constraints.maxHeight),
               child: IntrinsicHeight(
                 child: adminLoginFormWidget(
-                  emailController: emailController,
-                  forgotPasswordController: forgotPasswordController,
-                  passwordController: passwordController,
+                  phoneNumberController: phoneNumberController,
                   context: context,
                 ),
               ),

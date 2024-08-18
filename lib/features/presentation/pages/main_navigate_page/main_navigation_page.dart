@@ -9,11 +9,12 @@ import 'package:official_chatbox_admin_application/features/presentation/widgets
 import 'package:official_chatbox_admin_application/features/presentation/widgets/admin_home/navigation_widgets.dart';
 
 final pages = [
-  const AdminDashboard(),
   const AppUsersListPage(),
-  const DisabledUsersPage(),
+  const AdminDashboard(),
+  
   const ReportedAccountsPage(),
-  const SettingsPage(),
+  const DisabledUsersPage(),
+   SettingsPage(),
 ];
 
 class MainNavigationPage extends StatelessWidget {

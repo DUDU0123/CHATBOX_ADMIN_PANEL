@@ -131,13 +131,14 @@ Widget buildBottomNavigation({
           icon: Icons.group,
           label: "Users",
         ),
-        buildBottomNavItem(
-          icon: Icons.disabled_visible_outlined,
-          label: "Disabled Users",
-        ),
+        
         buildBottomNavItem(
           icon: Icons.report_gmailerrorred_outlined,
           label: "Reported Users",
+        ),
+        buildBottomNavItem(
+          icon: Icons.disabled_visible_outlined,
+          label: "Disabled Users",
         ),
         buildBottomNavItem(
           icon: Icons.settings_outlined,

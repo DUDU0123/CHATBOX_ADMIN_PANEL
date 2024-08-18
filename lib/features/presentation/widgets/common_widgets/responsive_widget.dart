@@ -1,7 +1,11 @@
+import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:official_chatbox_admin_application/core/constants/colors.dart';
 import 'package:official_chatbox_admin_application/core/constants/height_width.dart';
+import 'package:official_chatbox_admin_application/features/presentation/bloc/admin/admin_bloc.dart';
+import 'package:official_chatbox_admin_application/features/presentation/widgets/common_widgets/small_widgets.dart';
 import 'package:official_chatbox_admin_application/features/presentation/widgets/common_widgets/text_filed_widget_common.dart';
 import 'package:official_chatbox_admin_application/features/presentation/widgets/common_widgets/text_widget_common.dart';
 
@@ -14,10 +18,62 @@ Widget responsiveTextField({
   required BuildContext context,
   required String hintText,
   required TextEditingController controller,
-  required TextInputType? keyboardType,
+  required TextInputType? keyboardType,double? fontSize,
 }) {
-  return SizedBox(
+  return Container(
+    height: 50,
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(10),
+      color: kWhite,
+    ),
     width: responsiveWidth(context, 400),
+    child: Row(
+      children: [
+        GestureDetector(
+          onTap: () {
+            showCountryPicker(
+              countryListTheme: CountryListThemeData(
+                backgroundColor: Colors.black,
+                bottomSheetHeight: screenHeight(context: context) / 2,
+                borderRadius: BorderRadius.circular(15),
+              ),
+              context: context,
+              onSelect: (selectedCountry) {
+                context.read<AdminBloc>().add(
+                      CountrySelectedEvent(
+                        selectedCountry: selectedCountry,
+                      ),
+                    );
+              },
+            );
+          },
+          child: countrySelectedShowWidget(),
+        ),
+        kWidth10,
+        const VerticalDivider(
+          color: kGrey,
+          endIndent: 5,
+          indent: 5,
+        ),
+        responsiveField(
+          fontSize: fontSize,
+          context: context,
+          controller: controller,
+          keyboardType: keyboardType,
+          hintText: hintText,
+        ),
+      ],
+    ),
+  );
+}
+
+Expanded responsiveField({
+  required TextEditingController controller,
+  required TextInputType? keyboardType,
+  required String hintText,
+  required BuildContext context, double? fontSize,
+}) {
+  return Expanded(
     child: Container(
       height: 50,
       decoration: BoxDecoration(
@@ -37,7 +93,7 @@ Widget responsiveTextField({
             fontWeight: FontWeight.normal,
             fontSize: responsiveFontSize(
               context: context,
-              baseSize: 16,
+              baseSize:fontSize?? 16,
             ),
           ),
         ),
@@ -46,23 +102,22 @@ Widget responsiveTextField({
   );
 }
 
-Widget responsiveButton({
-  required BuildContext context,
-  required String buttontext,
-  required Color buttonColor,
-  required double buttonFontSize,
-  required double buttonWidth,
-  required void Function()? onTap,
-  Widget? leadingWidget,
-  double? height,
-  Color? textColor
-}) {
+Widget responsiveButton(
+    {required BuildContext context,
+    required String buttontext,
+    required Color buttonColor,
+    required double buttonFontSize,
+    required double buttonWidth,
+    required void Function()? onTap,
+    Widget? leadingWidget,
+    double? height,
+    Color? textColor}) {
   return GestureDetector(
     onTap: onTap,
     child: SizedBox(
       width: responsiveWidth(context, buttonWidth),
       child: Container(
-        height: height??40,
+        height: height ?? 40,
         decoration: BoxDecoration(
           color: buttonColor,
           borderRadius: BorderRadius.circular(5),
@@ -72,7 +127,7 @@ Widget responsiveButton({
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              leadingWidget??zeroMeasuredWidget,
+              leadingWidget ?? zeroMeasuredWidget,
               kWidth5,
               TextWidgetCommon(
                 text: buttontext,
@@ -81,7 +136,7 @@ Widget responsiveButton({
                   baseSize: buttonFontSize,
                 ),
                 fontWeight: FontWeight.bold,
-                textColor: textColor?? kWhite,
+                textColor: textColor ?? kWhite,
               ),
             ],
           ),

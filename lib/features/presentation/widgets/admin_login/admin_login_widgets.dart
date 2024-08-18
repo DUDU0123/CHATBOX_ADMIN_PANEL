@@ -27,17 +27,3 @@ Widget loginRequestTextWidget({
       textColor: kWhite,
     );
   }
-
-  Widget forgotPasswordTextWidget({
-    required BuildContext context,
-  }) {
-    return TextWidgetCommon(
-      text: 'Forgotten your password?',
-      fontWeight: FontWeight.w400,
-      fontSize: responsiveFontSize(
-        context: context,
-        baseSize: 15,
-      ),
-      textColor: kWhite,
-    );
-  }

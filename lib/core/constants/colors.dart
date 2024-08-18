@@ -14,3 +14,4 @@ const kNotSelectedColor =  Color.fromARGB(255, 150, 150, 150);
 
 // pic names
 const appLogo = 'assets/appLogo.png';
+const indiaFlag = "assets/india_flag.png";

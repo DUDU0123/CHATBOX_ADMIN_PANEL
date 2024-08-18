@@ -1,5 +1,5 @@
 import 'package:official_chatbox_admin_application/core/constants/database_constants.dart';
-import 'package:official_chatbox_admin_application/features/domain/entities/user_entity.dart';
+import 'package:official_chatbox_admin_application/features/domain/entities/user_entity/user_entity.dart';
 
 class UserModel extends UserEntity {
  const UserModel({

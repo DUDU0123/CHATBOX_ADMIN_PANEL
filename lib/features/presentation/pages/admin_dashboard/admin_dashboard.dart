@@ -4,6 +4,7 @@ import 'package:official_chatbox_admin_application/core/constants/height_width.d
 import 'package:official_chatbox_admin_application/features/presentation/widgets/admin_home/navigation_widgets.dart';
 import 'package:official_chatbox_admin_application/features/presentation/widgets/common_widgets/responsive_widget.dart';
 import 'package:official_chatbox_admin_application/features/presentation/widgets/common_widgets/text_widget_common.dart';
+
 class AdminDashboard extends StatelessWidget {
   const AdminDashboard({super.key});
 
@@ -24,20 +25,20 @@ class AdminDashboard extends StatelessWidget {
                 context: context,
               ),
             ),
-            
             Expanded(
               child: LayoutBuilder(
                 builder: (context, constraints) {
                   // Determine the number of columns based on screen width
-                  int crossAxisCount = constraints.maxWidth > smallScreenBreakpoint ? 2 : 1;
-                  
+                  int crossAxisCount =
+                      constraints.maxWidth > smallScreenBreakpoint ? 2 : 1;
+
                   // Adjust childAspectRatio based on the number of columns
                   double childAspectRatio = crossAxisCount == 2 ? 3 : 4;
-        
+
                   return GridView.count(
                     padding: EdgeInsets.symmetric(
-                      vertical: getResponsiveHeight(context, 10),horizontal: getResponsiveWidth(context, 10)
-                    ),
+                        vertical: getResponsiveHeight(context, 10),
+                        horizontal: getResponsiveWidth(context, 10)),
                     mainAxisSpacing: getResponsiveHeight(context, 30),
                     crossAxisSpacing: getResponsiveWidth(context, 10),
                     childAspectRatio: childAspectRatio,
@@ -77,6 +78,7 @@ double getResponsiveWidth(BuildContext context, double baseWidth) {
 double getResponsiveHeight(BuildContext context, double baseHeight) {
   return baseHeight * (MediaQuery.of(context).size.height / 812);
 }
+
 // (constraints.maxWidth / 2) /
 //                                 (constraints.maxHeight / 4)
 Widget dashboardWelcomNoteAndIcon({

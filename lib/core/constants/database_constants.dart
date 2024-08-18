@@ -20,9 +20,22 @@ const userDbProfilePhotoPrivacy = 'user_profile_photo_privacy';
 const userDbStatusPrivacy = 'user_status_privacy';
 const userDbNotificationTone = 'user_notification_tone';
 const userDbRingTone = 'user_ringtone';
+const adminsCollection = 'admins';
 const userDBNotificationName = 'notification_name';
 const userDBRingtoneName = 'ringtone_name';
 const userDbFcmToken = 'user_fcm_token';
+
+// admin fields
+const adminId = 'admin_id';
+const adminName = 'admin_name';
+const adminPhoneNumber = 'admin_phone_number';
+const adminProfilePhoto = 'admin_profile_photo';
+const adminJoinedDate = 'admin_joined_on';
+
+// storage field admin
+const adminsProfilePhotoFolder = 'admins_profile_photo';
+
+
 // collections
 const usersCollection = 'users';
-const reportedUsersAndGroupsCollection = 'reported_users_and_groups';
+const reportedUsersCollection = 'reported_users';
