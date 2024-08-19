@@ -16,7 +16,8 @@ class AddAdminEvent extends AdminEvent {
   });
   @override
   List<Object> get props => [
-        adminModel,imageFile??File(''),
+        adminModel,
+        imageFile ?? File(''),
       ];
 }
 
@@ -40,7 +41,9 @@ class CountrySelectedEvent extends AdminEvent {
     required this.selectedCountry,
   });
   @override
-  List<Object> get props => [selectedCountry,];
+  List<Object> get props => [
+        selectedCountry,
+      ];
 }
 
 class EnableUserEvent extends AdminEvent {
@@ -51,6 +54,7 @@ class EnableUserEvent extends AdminEvent {
   @override
   List<Object> get props => [userId];
 }
+
 class DisableUserEvent extends AdminEvent {
   final String userId;
   const DisableUserEvent({
@@ -58,4 +62,47 @@ class DisableUserEvent extends AdminEvent {
   });
   @override
   List<Object> get props => [userId];
+}
+
+class ImagePickEvent extends AdminEvent {}
+
+class GetAllAdminsEvent extends AdminEvent {}
+
+class GetCurrentAdminData extends AdminEvent {
+  final String phoneNumber;
+  const GetCurrentAdminData({
+    required this.phoneNumber,
+  });
+  @override
+  List<Object> get props => [phoneNumber];
+}
+
+class CheckIfAdminSignedInEvent extends AdminEvent {
+  @override
+  List<Object> get props => [];
+}
+
+class GetCurrentAdminNumberEvent extends AdminEvent {
+  final String number;
+  const GetCurrentAdminNumberEvent({
+    required this.number,
+  });
+  @override
+  List<Object> get props => [number];
+}
+class UpdateAdminEvent extends AdminEvent {
+  final AdminModel updatedAdminModel;
+ const UpdateAdminEvent({
+    required this.updatedAdminModel,
+  });
+  @override
+  List<Object> get props => [updatedAdminModel,];
+}
+class DeleteAdminEvent extends AdminEvent {
+  final String adminId;
+ const DeleteAdminEvent({
+    required this.adminId,
+  });
+  @override
+  List<Object> get props => [adminId,];
 }

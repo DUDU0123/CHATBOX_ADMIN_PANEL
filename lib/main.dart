@@ -8,11 +8,9 @@ import 'package:official_chatbox_admin_application/features/root_widget_page.dar
 
 Future<void> main() async {
    // Make sure zone errors are fatal before the binding is initialized
-  
-  
+  BindingBase.debugZoneErrorsAreFatal = true;
   // Wrapping your app in runZonedGuarded to catch unhandled async errors
   runZonedGuarded(() async {
-    BindingBase.debugZoneErrorsAreFatal = true;
     WidgetsFlutterBinding.ensureInitialized();
     await Firebase.initializeApp(
       options: const FirebaseOptions(

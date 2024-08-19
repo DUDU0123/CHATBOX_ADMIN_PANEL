@@ -4,12 +4,14 @@ import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:official_chatbox_admin_application/core/constants/database_constants.dart';
 import 'package:official_chatbox_admin_application/core/utils/common_db_functions.dart';
 
 import 'package:official_chatbox_admin_application/core/utils/common_snackbar_widget.dart';
 import 'package:official_chatbox_admin_application/features/data/models/admin_model/admin_model.dart';
+import 'package:official_chatbox_admin_application/features/presentation/pages/main_navigate_page/main_navigation_page.dart';
 
 class AdminData {
   final FirebaseFirestore firebaseFirestore;
@@ -29,7 +31,7 @@ class AdminData {
           .collection(adminsCollection)
           .add(adminModel.toJson());
       String? profileImageUrl;
-      
+
       final adminDocId = adminDoc.id;
       if (profileImageFile != null) {
         profileImageUrl = await CommonDbFunctions.saveUserFileToDataBaseStorage(
@@ -58,16 +60,40 @@ class AdminData {
     }
   }
 
+  Stream<List<AdminModel>>? getAllAdminsFromDB() {
+    try {
+      return firebaseFirestore
+          .collection(adminsCollection)
+          .snapshots()
+          .map((adminSnapshot) {
+        return adminSnapshot.docs
+            .map((adminDoc) => AdminModel.fromJson(map: adminDoc.data()))
+            .toList();
+      });
+    } on FirebaseException catch (e) {
+      log("get all admins error firebase: ${e.message}");
+      return null;
+    } catch (e) {
+      log('get all admins error: ${e.toString()}');
+      return null;
+    }
+  }
+
   // Method to start phone number verification for admins only
   Future<bool> signInWithPhoneNumber({
     required BuildContext context,
     required String phoneNumber,
   }) async {
     try {
+      log("Number: $phoneNumber");
       QuerySnapshot adminQuerySnapshot = await firebaseFirestore
           .collection(adminsCollection)
-          .where('phoneNumber', isEqualTo: phoneNumber)
+          .where(adminPhoneNumber, isEqualTo: phoneNumber)
           .get();
+      //  firebaseFirestore
+      //     .collection(adminsCollection).snapshots().map((val)=>val.docs.map((val)=>log(val.toString())));
+
+      log("Snap: ${adminQuerySnapshot.docs}");
 
       if (adminQuerySnapshot.docs.isEmpty) {
         return false;
@@ -97,7 +123,6 @@ class AdminData {
       log('Error during sign-in: ${e.toString()}');
       return false;
     }
-    return false;
   }
 
   // Method to manually sign in using OTP after user input
@@ -140,12 +165,24 @@ class AdminData {
           actions: [
             TextButton(
               onPressed: () async {
-                Navigator.of(context).pop();
-                await verifyOtp(
+                final value = await verifyOtp(
                   context: context,
                   verificationId: verificationId,
                   otp: otpController.text,
                 );
+
+                if (value) {
+                  await CommonDbFunctions.setUserAuthStatus(isSignedIn: true);
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const MainNavigationPage(),
+                    ),
+                    (route) => false,
+                  );
+                } else {
+                  return;
+                }
               },
               child: const Text('Verify'),
             ),
@@ -167,7 +204,7 @@ class AdminData {
       log("disable user firebase exception ${e.message}");
       return false;
     } catch (e) {
-      log("disable user firebase exception $e");
+      log("disable user exception $e");
       return false;
     }
   }
@@ -181,10 +218,62 @@ class AdminData {
       });
       return true;
     } on FirebaseException catch (e) {
-      log("disable user firebase exception ${e.message}");
+      log("enable user firebase exception ${e.message}");
       return false;
     } catch (e) {
-      log("disable user firebase exception $e");
+      log("enable user  exception $e");
+      return false;
+    }
+  }
+
+  Future<bool> editProfileData({
+    required AdminModel updatedModel,
+    Uint8List? profileImageFile,
+  }) async {
+    try {
+      String? profileImageUrl;
+      if (profileImageFile != null) {
+        profileImageUrl = await CommonDbFunctions.saveUserFileToDataBaseStorage(
+          ref: '$adminsProfilePhotoFolder/${updatedModel.id}',
+          file: profileImageFile,
+        );
+      }
+      final updatedAdminModel = updatedModel.copyWith(
+        profilePhoto: profileImageUrl,
+      );
+      await firebaseFirestore
+          .collection(adminsCollection)
+          .doc(adminId)
+          .update(updatedAdminModel.toJson());
+      return true;
+    } on FirebaseException catch (e) {
+      log("delete admin firebase exception ${e.message}");
+      return false;
+    } catch (e) {
+      log("delete admin  exception $e");
+      return false;
+    }
+  }
+
+  Future<bool> removeAdmin({
+    required String adminId,
+  }) async {
+    try {
+      final String adminFileUrl = '$adminsProfilePhotoFolder$adminId';
+      Reference storageReference =
+          FirebaseStorage.instance.refFromURL(adminFileUrl);
+      await storageReference.delete();
+
+      await firebaseFirestore
+          .collection(adminsCollection)
+          .doc(adminId)
+          .delete();
+      return true;
+    } on FirebaseException catch (e) {
+      log("delete admin firebase exception ${e.message}");
+      return false;
+    } catch (e) {
+      log("delete admin  exception $e");
       return false;
     }
   }

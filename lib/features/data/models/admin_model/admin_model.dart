@@ -16,7 +16,7 @@ class AdminModel extends AdminEntity {
     return AdminModel(
       id: map[adminId],
       adminMobileNumber: map[adminPhoneNumber],
-      adminName: map[adminName],
+      adminName: map[adminNameDB],
       profilePhoto: map[adminProfilePhoto],
       adminAccountCreatedAt: map[adminJoinedDate],
     );
@@ -26,7 +26,7 @@ class AdminModel extends AdminEntity {
     return {
       adminId: id,
       adminPhoneNumber: adminMobileNumber,
-      adminName: adminName,
+      adminNameDB: adminName,
       adminProfilePhoto: profilePhoto,
       adminJoinedDate: adminAccountCreatedAt,
     };

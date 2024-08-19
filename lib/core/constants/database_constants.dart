@@ -27,7 +27,7 @@ const userDbFcmToken = 'user_fcm_token';
 
 // admin fields
 const adminId = 'admin_id';
-const adminName = 'admin_name';
+const adminNameDB = 'admin_name';
 const adminPhoneNumber = 'admin_phone_number';
 const adminProfilePhoto = 'admin_profile_photo';
 const adminJoinedDate = 'admin_joined_on';

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:official_chatbox_admin_application/core/constants/colors.dart';
+import 'package:official_chatbox_admin_application/core/utils/common_db_functions.dart';
 import 'package:official_chatbox_admin_application/features/presentation/pages/admin_dashboard/admin_dashboard.dart';
+import 'package:official_chatbox_admin_application/features/presentation/pages/admin_login/admin_login_page.dart';
 import 'package:official_chatbox_admin_application/features/presentation/pages/app_users_list_page/app_users_list_page.dart';
 import 'package:official_chatbox_admin_application/features/presentation/pages/disabled_users_page/disabled_users_page.dart';
 import 'package:official_chatbox_admin_application/features/presentation/pages/reported_accounts_page/reported_accounts_page.dart';
@@ -9,17 +11,27 @@ import 'package:official_chatbox_admin_application/features/presentation/widgets
 import 'package:official_chatbox_admin_application/features/presentation/widgets/admin_home/navigation_widgets.dart';
 
 final pages = [
+  SettingsPage(),
   const AppUsersListPage(),
   const AdminDashboard(),
-  
   const ReportedAccountsPage(),
   const DisabledUsersPage(),
-   SettingsPage(),
+   
 ];
 
-class MainNavigationPage extends StatelessWidget {
+class MainNavigationPage extends StatefulWidget {
   const MainNavigationPage({super.key});
 
+  @override
+  State<MainNavigationPage> createState() => _MainNavigationPageState();
+}
+
+class _MainNavigationPageState extends State<MainNavigationPage> {
+  @override
+  void initState() {
+  
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(

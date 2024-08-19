@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
@@ -35,5 +34,20 @@ class AdminRepoImpl extends AdminRepository {
   @override
   Future<bool> enableUser({required String userId}) {
     return adminData.enableUser(userId: userId);
+  }
+  
+  @override
+  Stream<List<AdminModel>>? getAllAdmins() {
+    return adminData.getAllAdminsFromDB();
+  }
+  
+  @override
+  Future<bool> editProfileData({required AdminModel updatedModel, Uint8List? profileImageFile}) {
+    return adminData.editProfileData(updatedModel: updatedModel);
+  }
+  
+  @override
+  Future<bool> removeAdmin({required String adminId}) {
+    return adminData.removeAdmin(adminId: adminId);
   }
 }
