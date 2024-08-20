@@ -259,11 +259,6 @@ class AdminData {
     required String adminId,
   }) async {
     try {
-      final String adminFileUrl = '$adminsProfilePhotoFolder$adminId';
-      Reference storageReference =
-          FirebaseStorage.instance.refFromURL(adminFileUrl);
-      await storageReference.delete();
-
       await firebaseFirestore
           .collection(adminsCollection)
           .doc(adminId)
@@ -273,7 +268,7 @@ class AdminData {
       log("delete admin firebase exception ${e.message}");
       return false;
     } catch (e) {
-      log("delete admin  exception $e");
+      log("delete admin exception $e");
       return false;
     }
   }

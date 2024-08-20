@@ -28,46 +28,19 @@ Future<dynamic> addAdminDialogBoxWidget({
             child: SizedBox(
               width: dialogWidth,
               child: AlertDialog(
-                title: TextWidgetCommon(
+                title: dialogHeadingText(
+                  context: context,
                   text: "Add admin",
-                  fontSize: responsiveFontSize(
-                    context: context,
-                    baseSize: 20,
-                  ),
-                  fontWeight: FontWeight.bold,
                 ),
                 content: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    BlocBuilder<AdminBloc, AdminState>(
-                      builder: (context, state) {
-                        if (state.pickedFile != null) {
-                          return pickedImageShowContainer(
-                            isbuttonNeeded: true,
-                            context: context,
-                            state: state,
-                          );
-                        } else {
-                          return CircleAvatar(
-                            backgroundColor: kWhite,
-                            radius: 50,
-                            child: pickImageIconButton(
-                              context: context,
-                            ),
-                          );
-                        }
-                      },
-                    ),
+                    pickedImageShowWIdget(),
                     kHeight15,
-                    SizedBox(
-                      width: dialogWidth - 50,
-                      child: responsiveField(
-                        fontSize: 21,
-                        controller: nameController,
-                        keyboardType: TextInputType.text,
-                        hintText: "Enter name",
-                        context: context,
-                      ),
+                    nameEnterField(
+                      dialogWidth: dialogWidth,
+                      nameController: nameController,
+                      context: context,
                     ),
                     kHeight10,
                     SizedBox(
@@ -96,5 +69,58 @@ Future<dynamic> addAdminDialogBoxWidget({
         },
       );
     },
+  );
+}
+
+Widget nameEnterField({
+  required double dialogWidth,
+  required TextEditingController nameController,
+  required BuildContext context,
+}) {
+  return SizedBox(
+    width: dialogWidth - 50,
+    child: responsiveField(
+      fontSize: 21,
+      controller: nameController,
+      keyboardType: TextInputType.text,
+      hintText: "Enter name",
+      context: context,
+    ),
+  );
+}
+
+BlocBuilder<AdminBloc, AdminState> pickedImageShowWIdget() {
+  return BlocBuilder<AdminBloc, AdminState>(
+    builder: (context, state) {
+      if (state.pickedFile != null) {
+        return pickedImageShowContainer(
+          isbuttonNeeded: true,
+          context: context,
+          state: state,
+        );
+      } else {
+        return CircleAvatar(
+          backgroundColor: kWhite,
+          radius: 50,
+          child: pickImageIconButton(
+            context: context,
+          ),
+        );
+      }
+    },
+  );
+}
+
+Widget dialogHeadingText({
+  required BuildContext context,
+  required String text,
+}) {
+  return TextWidgetCommon(
+    text: text,
+    fontSize: responsiveFontSize(
+      context: context,
+      baseSize: 20,
+    ),
+    fontWeight: FontWeight.bold,
   );
 }

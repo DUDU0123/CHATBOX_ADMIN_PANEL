@@ -2,15 +2,12 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:official_chatbox_admin_application/core/constants/colors.dart';
 import 'package:official_chatbox_admin_application/core/constants/height_width.dart';
-import 'package:official_chatbox_admin_application/core/utils/common_db_functions.dart';
-import 'package:official_chatbox_admin_application/features/presentation/pages/admin_login/admin_login_page.dart';
 import 'package:official_chatbox_admin_application/features/presentation/widgets/admin_home/navigation_widgets.dart';
 import 'package:official_chatbox_admin_application/features/presentation/widgets/common_widgets/responsive_widget.dart';
 import 'package:official_chatbox_admin_application/features/presentation/widgets/common_widgets/text_widget_common.dart';
 import 'package:official_chatbox_admin_application/features/presentation/widgets/settings/add_admin_dialogbox_widget.dart';
 import 'package:official_chatbox_admin_application/features/presentation/widgets/settings/admins_stream_listview.dart';
 import 'package:official_chatbox_admin_application/features/presentation/widgets/settings/current_admin_data_show_widget.dart';
-import 'package:official_chatbox_admin_application/features/presentation/widgets/settings/settings_small_widgets.dart';
 
 Widget buildSettingsContent({
   required BuildContext context,

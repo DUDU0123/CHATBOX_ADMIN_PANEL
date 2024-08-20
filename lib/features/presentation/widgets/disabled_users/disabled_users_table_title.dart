@@ -15,6 +15,7 @@ Widget disabledUserstableTitle({
       ),
     ),
     child: tileRowWidget(
+      isAppUsersList: false,
       user: null,
       isReportedUserList: false,
       isDisabledUserList: true,

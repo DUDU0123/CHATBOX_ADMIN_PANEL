@@ -39,16 +39,18 @@ BlocBuilder<AdminBloc, AdminState> currentAdminDataShowWidget({
             textColor: kWhite,
             fontSize: responsiveFontSize(context: context, baseSize: 30),
           ),
-          kHeight15,
-          logOutButton(
-            ismounted: ismounted,
-            context: context,
-          ),
+          kHeight10,
           editProfileButton(
             currentModel: state.currentAdminData,
             ismounted: ismounted,
             context: context,
           ),
+          kHeight15,
+          logOutButton(
+            ismounted: ismounted,
+            context: context,
+          ),
+          
         ],
       );
     },

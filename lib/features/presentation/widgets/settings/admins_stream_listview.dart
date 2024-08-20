@@ -7,6 +7,7 @@ import 'package:official_chatbox_admin_application/core/constants/database_const
 import 'package:official_chatbox_admin_application/core/constants/height_width.dart';
 import 'package:official_chatbox_admin_application/features/data/models/admin_model/admin_model.dart';
 import 'package:official_chatbox_admin_application/features/presentation/bloc/admin/admin_bloc.dart';
+import 'package:official_chatbox_admin_application/features/presentation/widgets/common_widgets/dialog_box_widget.dart';
 import 'package:official_chatbox_admin_application/features/presentation/widgets/common_widgets/responsive_widget.dart';
 import 'package:official_chatbox_admin_application/features/presentation/widgets/common_widgets/small_widgets.dart';
 import 'package:official_chatbox_admin_application/features/presentation/widgets/common_widgets/text_widget_common.dart';
@@ -46,11 +47,29 @@ BlocBuilder<AdminBloc, AdminState> adminsStreamListview() {
                       baseSize: 18,
                     ),
                   ),
-                  trailing: IconButton(onPressed: () {
-                    // remove an admin from list
-                    final adminId = adminList[index].id;
-                   
-                  }, icon: const Icon(Icons.remove_circle_outline, color: kWhite,)),
+                  trailing: IconButton(
+                      onPressed: () {
+                        normalDialogBoxWidget(
+                          context: context,
+                          title: "Remove admin",
+                          subtitle: "Do you want to remove this admin",
+                          onPressed: () {
+                            final String? adminId = adminList[index].id;
+                            adminId != null
+                                ? context.read<AdminBloc>().add(
+                                      DeleteAdminEvent(
+                                        adminId: adminId,
+                                      ),
+                                    )
+                                : null;
+                          },
+                          actionButtonName: "Remove",
+                        );
+                      },
+                      icon: const Icon(
+                        Icons.remove_circle_outline,
+                        color: kWhite,
+                      )),
                 );
               },
               separatorBuilder: (context, index) => kHeight10,

@@ -15,3 +15,4 @@ const kNotSelectedColor =  Color.fromARGB(255, 150, 150, 150);
 // pic names
 const appLogo = 'assets/appLogo.png';
 const indiaFlag = "assets/india_flag.png";
+const settingsLottie = "https://lottie.host/13f9dae6-a998-4e91-82d1-a505b5aacd64/mI4P96e8ll.json";

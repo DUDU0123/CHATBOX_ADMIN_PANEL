@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:official_chatbox_admin_application/config/all_bloc_provider.dart';
 import 'package:official_chatbox_admin_application/core/constants/colors.dart';
+import 'package:official_chatbox_admin_application/core/constants/database_constants.dart';
 import 'package:official_chatbox_admin_application/features/presentation/bloc/user/user_bloc.dart';
 import 'package:official_chatbox_admin_application/features/presentation/widgets/admin_home/navigation_widgets.dart';
 import 'package:official_chatbox_admin_application/features/presentation/widgets/app_users/app_users_stream_listview.dart';
 import 'package:official_chatbox_admin_application/features/presentation/widgets/app_users/app_users_table_title.dart';
+import 'package:official_chatbox_admin_application/features/presentation/widgets/common_widgets/responsive_widget.dart';
 import 'package:official_chatbox_admin_application/features/presentation/widgets/common_widgets/text_widget_common.dart';
 
 class AppUsersListPage extends StatefulWidget {
@@ -15,6 +18,7 @@ class AppUsersListPage extends StatefulWidget {
 }
 
 class _AppUsersListPageState extends State<AppUsersListPage> {
+  TextEditingController searchController = TextEditingController();
   @override
   void initState() {
     context.read<UserBloc>().add(GetAllUsersEvent());
@@ -34,11 +38,36 @@ class _AppUsersListPageState extends State<AppUsersListPage> {
             children: [
               Padding(
                 padding: const EdgeInsets.all(15),
-                child: TextWidgetCommon(
-                  text: 'App Users',
-                  fontWeight: FontWeight.bold,
-                  fontSize: isSmallScreen ? 25 : 35,
-                  textColor: kWhite,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    TextWidgetCommon(
+                      text: 'App Users',
+                      fontWeight: FontWeight.bold,
+                      fontSize: isSmallScreen ? 25 : 35,
+                      textColor: kWhite,
+                    ),
+                    SizedBox(
+                      width: responsiveWidth(context, 300),
+                      child: responsiveField(
+                        onChanged: (value) async {
+                          String searchInput = value.trim();
+                          if (searchInput.isNotEmpty) {
+                            context.read<UserBloc>().add(
+                                SearchUsersEvent(searchInput: value.trim()));
+                          }
+                        },
+                        textColor: kWhite,
+                        borderColor: kWhite,
+                        containerColor: kWhite.withOpacity(0.1),
+                        controller: searchController,
+                        keyboardType: TextInputType.text,
+                        hintText: "Search user...",
+                        context: context,
+                        fontSize: 18,
+                      ),
+                    ),
+                  ],
                 ),
               ),
               Expanded(

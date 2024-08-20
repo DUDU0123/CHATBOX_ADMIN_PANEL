@@ -40,6 +40,7 @@ BlocBuilder<UserBloc, UserState> disabledUsersStreamListView({
                 itemBuilder: (context, index) {
                   log(disabledUsers[index].userProfileImage.toString());
                   return tileContainerWidget(
+                    isAppUsersList: false,
                     user: disabledUsers[index],
                     isReportedUsersList: false,
                     isDisabledUserList: true,

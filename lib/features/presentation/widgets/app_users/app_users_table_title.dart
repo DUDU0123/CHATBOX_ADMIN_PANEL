@@ -15,6 +15,7 @@ Widget appUsersTableTitle({
         ),
       ),
       child: tileRowWidget(
+        isAppUsersList: true,
         user: null,
         isReportedUserList: false,
         isDisabledUserList: false,

@@ -14,12 +14,13 @@ Widget tileContainerWidget({
   required BuildContext context,
   required bool isDisabledUserList,
   required bool isReportedUsersList,
-  required UserModel user,
+  required UserModel user,required bool isAppUsersList
 }) {
   return Container(
     padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
     decoration: containerBoxDecoration(),
     child: tileRowWidget(
+      isAppUsersList: isAppUsersList,
       user: user,
       isReportedUserList: isReportedUsersList,
       userProfileImage: userProfileImage,

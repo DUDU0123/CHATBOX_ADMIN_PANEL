@@ -37,6 +37,7 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
 
   Future<FutureOr<void>> adminSignInEvent(
       AdminSignInEvent event, Emitter<AdminState> emit) async {
+    emit(AdminLoadingState());
     try {
       // RegExp phoneRegExp =
       //     RegExp(r'^\+?(\d{1,3})?[-. ]?(\(?\d{3}\)?)[-. ]?\d{3}[-. ]?\d{4}$');
@@ -181,6 +182,7 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
       UpdateAdminEvent event, Emitter<AdminState> emit) async {
     try {
       final value = await adminRepository.editProfileData(
+          profileImageFile: event.imageFile,
           updatedModel: event.updatedAdminModel);
       if (value) {
         add(GetAllAdminsEvent());

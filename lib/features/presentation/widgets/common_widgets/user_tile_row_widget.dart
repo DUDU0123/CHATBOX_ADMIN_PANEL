@@ -20,6 +20,7 @@ Widget tileRowWidget({
   required BuildContext context,
   required bool isDisabledUserList,
   required bool isReportedUserList,
+  required bool isAppUsersList,
 }) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -49,7 +50,7 @@ Widget tileRowWidget({
       ),
       if (!isTitle)
         Expanded(
-          flex: 1,
+          // flex: 1,
           child: Row(
             children: [
               isDisabledUserList || isReportedUserList
@@ -79,20 +80,12 @@ Widget tileRowWidget({
                         ),
                       ),
                     )
-                  : IconButton(
-                      onPressed: () {},
-                      icon: const Icon(Icons.disabled_visible_sharp),
-                    ),
-              !isDisabledUserList && !isReportedUserList
-                  ? IconButton(
-                      onPressed: () {},
-                      icon: const Icon(Icons.delete_outline_outlined),
-                    )
                   : zeroMeasuredWidget,
+              
             ],
           ),
         ),
-      if (isTitle)
+      if (isTitle&&!isAppUsersList)
         Expanded(
           flex: 1,
           child: TextWidgetCommon(
@@ -113,7 +106,7 @@ Widget flexResponsiveTextWidget({
   required bool isTitle,
 }) {
   return Expanded(
-    flex: 2,
+    flex: 3,
     child: TextWidgetCommon(
       textAlign: TextAlign.center,
       text: userPhoneNumber,

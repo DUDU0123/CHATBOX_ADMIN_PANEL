@@ -90,19 +90,28 @@ class GetCurrentAdminNumberEvent extends AdminEvent {
   @override
   List<Object> get props => [number];
 }
+
 class UpdateAdminEvent extends AdminEvent {
   final AdminModel updatedAdminModel;
- const UpdateAdminEvent({
+  final Uint8List? imageFile;
+  const UpdateAdminEvent({
     required this.updatedAdminModel,
+    this.imageFile,
   });
   @override
-  List<Object> get props => [updatedAdminModel,];
+  List<Object> get props => [
+        updatedAdminModel,
+        imageFile ?? Uint8List(0),
+      ];
 }
+
 class DeleteAdminEvent extends AdminEvent {
   final String adminId;
- const DeleteAdminEvent({
+  const DeleteAdminEvent({
     required this.adminId,
   });
   @override
-  List<Object> get props => [adminId,];
+  List<Object> get props => [
+        adminId,
+      ];
 }
