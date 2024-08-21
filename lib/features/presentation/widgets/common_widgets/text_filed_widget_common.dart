@@ -44,7 +44,6 @@ class TextFieldCommon extends StatelessWidget {
     return TextFormField(
       onChanged: onChanged,
       onTapOutside: (event) {
-        // FocusScope.of(context).requestFocus(FocusNode());
         FocusManager.instance.primaryFocus?.unfocus();
       },
       maxLines: maxLines ?? 1,

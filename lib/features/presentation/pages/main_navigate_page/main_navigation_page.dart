@@ -5,8 +5,8 @@ import 'package:official_chatbox_admin_application/features/presentation/pages/a
 import 'package:official_chatbox_admin_application/features/presentation/pages/disabled_users_page/disabled_users_page.dart';
 import 'package:official_chatbox_admin_application/features/presentation/pages/reported_accounts_page/reported_accounts_page.dart';
 import 'package:official_chatbox_admin_application/features/presentation/pages/settings_page/settings_page.dart';
-import 'package:official_chatbox_admin_application/features/presentation/widgets/admin_home/admin_home_widgets.dart';
-import 'package:official_chatbox_admin_application/features/presentation/widgets/admin_home/navigation_widgets.dart';
+import 'package:official_chatbox_admin_application/features/presentation/widgets/app_navigation_widgets/app_nav_widgets.dart';
+import 'package:official_chatbox_admin_application/features/presentation/widgets/app_navigation_widgets/navigation_widgets.dart';
 
 final pages = [
   const AdminDashboard(),

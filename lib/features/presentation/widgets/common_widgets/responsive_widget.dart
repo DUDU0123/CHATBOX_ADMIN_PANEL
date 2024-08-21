@@ -111,43 +111,6 @@ Widget responsiveField({
   );
 }
 
-// Expanded responsiveField({
-//   required TextEditingController controller,
-//   required TextInputType? keyboardType,
-//   required String hintText,
-//   required BuildContext context, double? fontSize,Color? containerColor, Color? textColor,Color? borderColor,void Function(String)? onChanged,
-// }) {
-//   return Expanded(
-//     child: Container(
-//       height: 50,
-//       decoration: BoxDecoration(
-//         borderRadius: BorderRadius.circular(10),
-//         border: Border.all(color: borderColor??kTransparent,),
-//         color: containerColor?? kWhite,
-//       ),
-//       child: Center(
-//         child: TextFieldCommon(
-//           onChanged: onChanged,
-//           controller: controller,
-//           keyboardType: keyboardType,
-//           textAlign: TextAlign.center,
-//           cursorColor: textColor?? kBlack,
-//           hintText: hintText,
-//           border: InputBorder.none,
-//           style: GoogleFonts.play(
-//             color: textColor?? kBlack,
-//             fontWeight: FontWeight.normal,
-//             fontSize: responsiveFontSize(
-//               context: context,
-//               baseSize:fontSize?? 16,
-//             ),
-//           ),
-//         ),
-//       ),
-//     ),
-//   );
-// }
-
 Widget responsiveButton(
     {required BuildContext context,
     required String buttontext,

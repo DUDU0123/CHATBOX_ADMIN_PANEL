@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:official_chatbox_admin_application/features/data/models/user_model/user_model.dart';
-import 'package:official_chatbox_admin_application/features/presentation/widgets/admin_home/navigation_widgets.dart';
+import 'package:official_chatbox_admin_application/features/presentation/widgets/app_navigation_widgets/navigation_widgets.dart';
 import 'package:official_chatbox_admin_application/features/presentation/widgets/common_widgets/user_tile_row_widget.dart';
 
 Widget tileContainerWidget({

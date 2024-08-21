@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:official_chatbox_admin_application/core/constants/colors.dart';
 import 'package:official_chatbox_admin_application/core/constants/height_width.dart';
 import 'package:official_chatbox_admin_application/features/presentation/bloc/navigation/navigation_bloc.dart';
-import 'package:official_chatbox_admin_application/features/presentation/widgets/admin_home/admin_home_widgets.dart';
+import 'package:official_chatbox_admin_application/features/presentation/widgets/app_navigation_widgets/app_nav_widgets.dart';
 
 Widget buildSideNavigation({
   required BuildContext context,

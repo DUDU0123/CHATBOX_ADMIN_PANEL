@@ -6,7 +6,6 @@ Future<Uint8List?> pickOneFile() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles();
     Uint8List? fileBytes;
     if (result != null) {
-      // file = File(result.files.single.bytes!);
        fileBytes = result.files.single.bytes!;
       return fileBytes;
     } else {

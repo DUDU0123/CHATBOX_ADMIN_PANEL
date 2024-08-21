@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:official_chatbox_admin_application/core/constants/colors.dart';
 import 'package:official_chatbox_admin_application/features/presentation/bloc/user/user_bloc.dart';
-import 'package:official_chatbox_admin_application/features/presentation/widgets/admin_home/navigation_widgets.dart';
+import 'package:official_chatbox_admin_application/features/presentation/widgets/app_navigation_widgets/navigation_widgets.dart';
 import 'package:official_chatbox_admin_application/features/presentation/widgets/common_widgets/text_widget_common.dart';
 import 'package:official_chatbox_admin_application/features/presentation/widgets/reported_users/reported_users_stream_list_view.dart';
 import 'package:official_chatbox_admin_application/features/presentation/widgets/reported_users/reported_users_table_title.dart';

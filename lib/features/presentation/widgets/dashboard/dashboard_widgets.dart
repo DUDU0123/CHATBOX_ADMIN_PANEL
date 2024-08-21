@@ -4,7 +4,7 @@ import 'package:official_chatbox_admin_application/core/constants/colors.dart';
 import 'package:official_chatbox_admin_application/core/constants/height_width.dart';
 import 'package:official_chatbox_admin_application/core/utils/responsive_width_height.dart';
 import 'package:official_chatbox_admin_application/features/presentation/bloc/admin/admin_bloc.dart';
-import 'package:official_chatbox_admin_application/features/presentation/widgets/admin_home/navigation_widgets.dart';
+import 'package:official_chatbox_admin_application/features/presentation/widgets/app_navigation_widgets/navigation_widgets.dart';
 import 'package:official_chatbox_admin_application/features/presentation/widgets/common_widgets/responsive_widget.dart';
 import 'package:official_chatbox_admin_application/features/presentation/widgets/common_widgets/text_widget_common.dart';
 
