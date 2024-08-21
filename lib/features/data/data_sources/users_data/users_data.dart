@@ -1,7 +1,4 @@
-import 'dart:developer';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:official_chatbox_admin_application/core/constants/database_constants.dart';
 import 'package:official_chatbox_admin_application/features/data/models/user_model/user_model.dart';
 
@@ -17,7 +14,6 @@ class UsersData {
           .collection(usersCollection)
           .snapshots()
           .map((userSnapshot) {
-        log("Snaps docs: ${userSnapshot.docs}");
         return userSnapshot.docs
             .map(
               (doc) => UserModel.fromJson(
@@ -27,10 +23,8 @@ class UsersData {
             .toList();
       });
     } on FirebaseException catch (e) {
-      log("Get all users firebase exception ${e.message}");
       return null;
     } catch (e) {
-      log("Get all users firebase exception $e");
       return null;
     }
   }
@@ -42,7 +36,6 @@ class UsersData {
           .where(isUserDisabled, isEqualTo: true)
           .snapshots()
           .map((userSnapshot) {
-        log("Snaps docs: ${userSnapshot.docs}");
         return userSnapshot.docs
             .map(
               (doc) => UserModel.fromJson(
@@ -52,10 +45,8 @@ class UsersData {
             .toList();
       });
     } on FirebaseException catch (e) {
-      log("Get all disabled users firebase exception ${e.message}");
       return null;
     } catch (e) {
-      log("Get all disabled users firebase exception $e");
       return null;
     }
   }
@@ -66,7 +57,6 @@ class UsersData {
           .collection(reportedUsersCollection)
           .snapshots()
           .map((userSnapshot) {
-        log("Snaps docs: ${userSnapshot.docs}");
         return userSnapshot.docs
             .map(
               (doc) => UserModel.fromJson(
@@ -76,11 +66,39 @@ class UsersData {
             .toList();
       });
     } on FirebaseException catch (e) {
-      log("Get all disabled users firebase exception ${e.message}");
       return null;
     } catch (e) {
-      log("Get all disabled users firebase exception $e");
       return null;
+    }
+  }
+
+    Future<bool> disableUser({
+    required String userId,
+  }) async {
+    try {
+      await firebaseFirestore.collection(usersCollection).doc(userId).update({
+        isUserDisabled: true,
+      });
+      return true;
+    } on FirebaseException catch (e) {
+      return false;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Future<bool> enableUser({
+    required String userId,
+  }) async {
+    try {
+      await firebaseFirestore.collection(usersCollection).doc(userId).update({
+        isUserDisabled: false,
+      });
+      return true;
+    } on FirebaseException catch (e) {
+      return false;
+    } catch (e) {
+      return false;
     }
   }
 }

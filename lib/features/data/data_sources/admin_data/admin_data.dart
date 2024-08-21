@@ -1,10 +1,6 @@
-import 'dart:developer';
-import 'dart:io';
 import 'dart:typed_data';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:official_chatbox_admin_application/core/constants/database_constants.dart';
 import 'package:official_chatbox_admin_application/core/utils/common_db_functions.dart';
@@ -52,10 +48,8 @@ class AdminData {
 
       return true;
     } on FirebaseException catch (e) {
-      log("Admin add error ${e.message}");
       return false;
     } catch (e) {
-      log("Admin add error $e");
       return false;
     }
   }
@@ -71,10 +65,8 @@ class AdminData {
             .toList();
       });
     } on FirebaseException catch (e) {
-      log("get all admins error firebase: ${e.message}");
       return null;
     } catch (e) {
-      log('get all admins error: ${e.toString()}');
       return null;
     }
   }
@@ -85,16 +77,10 @@ class AdminData {
     required String phoneNumber,
   }) async {
     try {
-      log("Number: $phoneNumber");
       QuerySnapshot adminQuerySnapshot = await firebaseFirestore
           .collection(adminsCollection)
           .where(adminPhoneNumber, isEqualTo: phoneNumber)
           .get();
-      //  firebaseFirestore
-      //     .collection(adminsCollection).snapshots().map((val)=>val.docs.map((val)=>log(val.toString())));
-
-      log("Snap: ${adminQuerySnapshot.docs}");
-
       if (adminQuerySnapshot.docs.isEmpty) {
         return false;
       }
@@ -117,10 +103,8 @@ class AdminData {
       );
       return true;
     } on FirebaseAuthException catch (e) {
-      log('Error during sign-in: ${e.message}');
       return false;
     } catch (e) {
-      log('Error during sign-in: ${e.toString()}');
       return false;
     }
   }
@@ -139,10 +123,8 @@ class AdminData {
       await fireBaseAuth.signInWithCredential(credential);
       return true;
     } on FirebaseAuthException catch (e) {
-      log("Otp verify error: ${e.message}");
       return false;
     } catch (e) {
-      log('Error otp verify: ${e.toString()}');
       return false;
     }
   }
@@ -192,39 +174,6 @@ class AdminData {
     );
   }
 
-  Future<bool> disableUser({
-    required String userId,
-  }) async {
-    try {
-      await firebaseFirestore.collection(usersCollection).doc(userId).update({
-        isUserDisabled: true,
-      });
-      return true;
-    } on FirebaseException catch (e) {
-      log("disable user firebase exception ${e.message}");
-      return false;
-    } catch (e) {
-      log("disable user exception $e");
-      return false;
-    }
-  }
-
-  Future<bool> enableUser({
-    required String userId,
-  }) async {
-    try {
-      await firebaseFirestore.collection(usersCollection).doc(userId).update({
-        isUserDisabled: false,
-      });
-      return true;
-    } on FirebaseException catch (e) {
-      log("enable user firebase exception ${e.message}");
-      return false;
-    } catch (e) {
-      log("enable user  exception $e");
-      return false;
-    }
-  }
 
   Future<bool> editProfileData({
     required AdminModel updatedModel,
@@ -239,18 +188,18 @@ class AdminData {
         );
       }
       final updatedAdminModel = updatedModel.copyWith(
-        profilePhoto: profileImageUrl,
+        profilePhoto: profileImageUrl!=null&&profileImageUrl.isNotEmpty? profileImageUrl:updatedModel.profilePhoto,
       );
       await firebaseFirestore
           .collection(adminsCollection)
-          .doc(adminId)
+          .doc(updatedModel.id)
           .update(updatedAdminModel.toJson());
+
+      await CommonDbFunctions.setUserAuthStatus(isSignedIn: true);
       return true;
     } on FirebaseException catch (e) {
-      log("delete admin firebase exception ${e.message}");
       return false;
     } catch (e) {
-      log("delete admin  exception $e");
       return false;
     }
   }
@@ -265,10 +214,8 @@ class AdminData {
           .delete();
       return true;
     } on FirebaseException catch (e) {
-      log("delete admin firebase exception ${e.message}");
       return false;
     } catch (e) {
-      log("delete admin exception $e");
       return false;
     }
   }

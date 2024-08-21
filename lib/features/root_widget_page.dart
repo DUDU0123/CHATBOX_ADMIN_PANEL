@@ -13,7 +13,7 @@ class RootWidgetPage extends StatelessWidget {
       providers: AllBlocProvider.allBlocProviders,
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        
+        title: 'ChatBox Admin Console',
         theme: ThemeData.dark(
           useMaterial3: true,
         ).copyWith(

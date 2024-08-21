@@ -21,5 +21,15 @@ class UserRepoImpl extends UserRepository {
   Stream<List<UserModel>>? getAllReportedAccountsInDB() {
     return usersData.getAllReportedAccountsFromDB();
   }
+  
+  @override
+  Future<bool> disableUser({required String userId}) {
+    return usersData.disableUser(userId: userId);
+  }
+  
+  @override
+  Future<bool> enableUser({required String userId}) {
+    return usersData.enableUser(userId: userId);
+  }
 
 }

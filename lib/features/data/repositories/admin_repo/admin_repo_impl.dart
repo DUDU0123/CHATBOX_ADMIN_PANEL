@@ -27,23 +27,13 @@ class AdminRepoImpl extends AdminRepository {
   }
   
   @override
-  Future<bool> disableUser({required String userId}) {
-    return adminData.disableUser(userId: userId);
-  }
-  
-  @override
-  Future<bool> enableUser({required String userId}) {
-    return adminData.enableUser(userId: userId);
-  }
-  
-  @override
   Stream<List<AdminModel>>? getAllAdmins() {
     return adminData.getAllAdminsFromDB();
   }
   
   @override
   Future<bool> editProfileData({required AdminModel updatedModel, Uint8List? profileImageFile}) {
-    return adminData.editProfileData(updatedModel: updatedModel);
+    return adminData.editProfileData(updatedModel: updatedModel, profileImageFile: profileImageFile,);
   }
   
   @override

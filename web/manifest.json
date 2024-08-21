@@ -1,6 +1,6 @@
 {
-    "name": "official_chatbox_admin_application",
-    "short_name": "official_chatbox_admin_application",
+    "name": "ChatBox Admin Console",
+    "short_name": "ChatBox Admin Console",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

@@ -5,25 +5,18 @@ import 'package:official_chatbox_admin_application/features/presentation/bloc/ad
 import 'package:official_chatbox_admin_application/features/presentation/widgets/settings/build_settings_content.dart';
 
 class SettingsPage extends StatefulWidget {
-  SettingsPage({super.key});
+  const SettingsPage({super.key});
 
   @override
   State<SettingsPage> createState() => _SettingsPageState();
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  TextEditingController nameController = TextEditingController();
-  TextEditingController phoneNumberController = TextEditingController();
+ 
   @override
   void initState() {
     context.read<AdminBloc>().add(GetAllAdminsEvent());
     super.initState();
-  }
-  @override
-  void dispose() {
-    phoneNumberController.dispose();
-    nameController.dispose();
-    super.dispose();
   }
 
   @override
@@ -33,8 +26,6 @@ class _SettingsPageState extends State<SettingsPage> {
       body: buildSettingsContent(
         ismounted: mounted,
         context: context,
-        nameController: nameController,
-        phoneNumberController: phoneNumberController,
       ),
     );
   }

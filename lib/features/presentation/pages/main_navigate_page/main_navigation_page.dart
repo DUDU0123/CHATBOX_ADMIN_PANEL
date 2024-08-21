@@ -13,7 +13,7 @@ final pages = [
   const AppUsersListPage(),
   const ReportedAccountsPage(),
   const DisabledUsersPage(),
-  SettingsPage(),
+  const SettingsPage(),
 ];
 
 class MainNavigationPage extends StatefulWidget {

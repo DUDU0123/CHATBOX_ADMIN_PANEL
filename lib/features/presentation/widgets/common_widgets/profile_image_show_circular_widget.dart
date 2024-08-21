@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:official_chatbox_admin_application/core/constants/colors.dart';
@@ -25,7 +23,6 @@ Widget profileImageShowCircularWidget({
               fit: BoxFit.cover,
               userProfileImage,
               errorBuilder: (context, error, stackTrace) {
-                log(error.toString());
                 return commonProfileDefaultIconCircularCotainer(
                   defaultContainerColor: defaultContainerColor,
                   context: context,

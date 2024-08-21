@@ -21,15 +21,14 @@ class _WrapperPageState extends State<WrapperPage> {
 
   @override
   Widget build(BuildContext context) {
-    // if (context.watch<AdminBloc>().state.isAdminSignedIn != null) {
-    //   if (context.watch<AdminBloc>().state.isAdminSignedIn!) {
-    //     return const MainNavigationPage();
-    //   } else {
-    //     return const AdminLoginPage();
-    //   }
-    // }else{
-    //   return zeroMeasuredWidget;
-    // }
-    return const MainNavigationPage();
+    if (context.watch<AdminBloc>().state.isAdminSignedIn != null) {
+      if (context.watch<AdminBloc>().state.isAdminSignedIn!) {
+        return const MainNavigationPage();
+      } else {
+        return const AdminLoginPage();
+      }
+    } else {
+      return zeroMeasuredWidget;
+    }
   }
 }

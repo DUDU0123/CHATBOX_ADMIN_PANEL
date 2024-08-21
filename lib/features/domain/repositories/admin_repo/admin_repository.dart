@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
@@ -14,12 +13,6 @@ abstract class AdminRepository{
   Future<bool> signInWithPhoneNumber({
     required BuildContext context,
     required String phoneNumber,
-  });
-  Future<bool> disableUser({
-    required String userId,
-  });
-  Future<bool> enableUser({
-    required String userId,
   });
   Future<bool> editProfileData({
     required AdminModel updatedModel,

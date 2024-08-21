@@ -26,6 +26,7 @@ class _DisabledUsersPageState extends State<DisabledUsersPage> {
       body: LayoutBuilder(
         builder: (context, constraints) {
           final isSmallScreen = constraints.maxWidth < 600;
+          final isMidOverScreen = constraints.maxWidth < 845;
 
           return Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -51,12 +52,14 @@ class _DisabledUsersPageState extends State<DisabledUsersPage> {
                   ),
                   child: Column(
                     children: [
+                      if(!isMidOverScreen)
                       disabledUserstableTitle(
                         context: context,
                         isSmallScreen: isSmallScreen,
                       ),
                       Expanded(
                         child: disabledUsersStreamListView(
+                          isMidOverScreen: isMidOverScreen,
                           isSmallScreen: isSmallScreen,
                         ),
                       ),

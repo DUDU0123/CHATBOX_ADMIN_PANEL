@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:official_chatbox_admin_application/core/constants/colors.dart';
 import 'package:official_chatbox_admin_application/core/constants/height_width.dart';
@@ -35,7 +34,6 @@ class AdminAuthMethods{
           kHeight10,
           responsiveButton(
             onTap: () {
-              log("Button Pressed forgot password");
               Navigator.pop(context);
               commonSnackBarWidget(context: context, contentText: "Email sent for password reset");
             },

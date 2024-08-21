@@ -1,4 +1,3 @@
-import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:official_chatbox_admin_application/core/constants/colors.dart';
@@ -10,11 +9,8 @@ import 'package:official_chatbox_admin_application/features/presentation/widgets
 
 Future<dynamic> addAdminDialogBoxWidget({
   required BuildContext context,
-  required TextEditingController nameController,
-  required TextEditingController phoneNumberController,
-  required Uint8List? pickedFile,
 }) {
-  return showDialog(
+  return showModalBottomSheet(
     context: context,
     builder: (context) {
       return LayoutBuilder(
@@ -27,49 +23,85 @@ Future<dynamic> addAdminDialogBoxWidget({
           return Center(
             child: SizedBox(
               width: dialogWidth,
-              child: AlertDialog(
-                title: dialogHeadingText(
-                  context: context,
-                  text: "Add admin",
-                ),
-                content: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    pickedImageShowWIdget(),
-                    kHeight15,
-                    nameEnterField(
-                      dialogWidth: dialogWidth,
-                      nameController: nameController,
-                      context: context,
-                    ),
-                    kHeight10,
-                    SizedBox(
-                      width: dialogWidth - 50,
-                      child: responsiveTextField(
-                        fontSize: 21,
-                        context: context,
-                        hintText: 'Enter phone number with country code',
-                        controller: phoneNumberController,
-                        keyboardType: TextInputType.phone,
-                      ),
-                    ),
-                  ],
-                ),
-                actions: [
-                  adminAddButton(
-                    context: context,
-                    phoneNumberController: phoneNumberController,
-                    nameController: nameController,
-                    pickedFile: pickedFile,
-                  ),
-                ],
-              ),
+              child: AddAdminWidget(dialogWidth: dialogWidth),
             ),
           );
         },
       );
     },
   );
+}
+
+class AddAdminWidget extends StatefulWidget {
+   const AddAdminWidget({
+    super.key,
+    required this.dialogWidth,
+  });
+
+  final double dialogWidth;
+
+  @override
+  State<AddAdminWidget> createState() => _AddAdminWidgetState();
+}
+
+class _AddAdminWidgetState extends State<AddAdminWidget> {
+     TextEditingController nameController = TextEditingController();
+
+  TextEditingController phoneNumberController = TextEditingController();
+
+  @override
+  void dispose() {
+    phoneNumberController.dispose();
+    nameController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+      child: ScrollConfiguration(
+        behavior:
+                ScrollConfiguration.of(context).copyWith(scrollbars: false),
+        child: SingleChildScrollView(
+          child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                dialogHeadingText(
+                  context: context,
+                  text: "Add Admin",
+                ),
+                kHeight10,
+                pickedImageShowWIdget(),
+                kHeight15,
+                nameEnterField(
+                  dialogWidth: widget.dialogWidth,
+                  nameController: nameController,
+                  context: context,
+                ),
+                kHeight10,
+                SizedBox(
+                  width: widget.dialogWidth - 50,
+                  child: responsiveTextField(
+                    fontSize: 21,
+                    context: context,
+                    hintText: 'Enter phone number with country code',
+                    controller: phoneNumberController,
+                    keyboardType: TextInputType.phone,
+                  ),
+                ),
+                kHeight10,
+                adminAddButton(
+                context: context,
+                phoneNumberController: phoneNumberController,
+                nameController: nameController,
+              ),
+              ],
+            ),
+        ),
+      ),
+    );
+  }
 }
 
 Widget nameEnterField({

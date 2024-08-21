@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:official_chatbox_admin_application/core/constants/colors.dart';
 import 'package:official_chatbox_admin_application/core/constants/height_width.dart';
 import 'package:official_chatbox_admin_application/core/utils/responsive_width_height.dart';
+import 'package:official_chatbox_admin_application/features/presentation/bloc/admin/admin_bloc.dart';
 import 'package:official_chatbox_admin_application/features/presentation/widgets/admin_home/navigation_widgets.dart';
 import 'package:official_chatbox_admin_application/features/presentation/widgets/common_widgets/responsive_widget.dart';
 import 'package:official_chatbox_admin_application/features/presentation/widgets/common_widgets/text_widget_common.dart';
@@ -20,9 +22,18 @@ Widget dashboardWelcomNoteAndIcon({
           textColor: kWhite,
         ),
       ),
-      const CircleAvatar(
-        radius: 20,
-        child: Icon(Icons.person),
+      BlocBuilder<AdminBloc, AdminState>(
+        builder: (context, state) {
+          return CircleAvatar(
+            radius: 20,
+            backgroundColor: kWhite,
+            child: state.currentAdminData != null
+                ? state.currentAdminData!.profilePhoto != null
+                    ? Image.network(state.currentAdminData!.profilePhoto!)
+                    : const Icon(Icons.person, color: kLightGreenColor,)
+                : const Icon(Icons.person, color: kGreenBlack,),
+          );
+        },
       )
     ],
   );

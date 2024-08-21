@@ -1,4 +1,3 @@
-import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:official_chatbox_admin_application/core/constants/colors.dart';
 import 'package:official_chatbox_admin_application/core/constants/height_width.dart';
@@ -11,11 +10,8 @@ import 'package:official_chatbox_admin_application/features/presentation/widgets
 
 Widget buildSettingsContent({
   required BuildContext context,
-  required TextEditingController nameController,
-  required TextEditingController phoneNumberController,
   required bool ismounted,
 }) {
-  Uint8List? pickedFile;
   return Container(
     width: screenWidth(context: context),
     margin: const EdgeInsets.all(15),
@@ -59,9 +55,6 @@ Widget buildSettingsContent({
                         onTap: () {
                           addAdminDialogBoxWidget(
                             context: context,
-                            nameController: nameController,
-                            phoneNumberController: phoneNumberController,
-                            pickedFile: pickedFile,
                           );
                         },
                         child: const Icon(

@@ -1,19 +1,15 @@
-import 'dart:developer';
-import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:official_chatbox_admin_application/core/constants/colors.dart';
 import 'package:official_chatbox_admin_application/core/constants/height_width.dart';
 import 'package:official_chatbox_admin_application/features/data/models/admin_model/admin_model.dart';
 import 'package:official_chatbox_admin_application/features/presentation/bloc/admin/admin_bloc.dart';
 import 'package:official_chatbox_admin_application/features/presentation/widgets/common_widgets/responsive_widget.dart';
+import 'package:provider/provider.dart';
 
 Widget adminAddButton({
   required BuildContext context,
   required TextEditingController phoneNumberController,
   required TextEditingController nameController,
-  required Uint8List? pickedFile,
 }) {
   return responsiveButton(
     context: context,
@@ -28,21 +24,20 @@ Widget adminAddButton({
       final String phoneNumber = countryCode != null && countryCode.isNotEmpty
           ? "+$countryCode$mobileNumber"
           : "+91 $mobileNumber";
-        final nameOfAdmin = nameController.text;
-        log("Name of admin saved $nameOfAdmin");
+      final nameOfAdmin = nameController.text;
       final AdminModel adminModel = AdminModel(
         adminAccountCreatedAt: DateTime.now().toString(),
         adminMobileNumber: phoneNumber,
         adminName: nameOfAdmin,
       );
-      log("Name of admin ${nameController.text}");
-      log("Number of admin ${phoneNumberController.text}");
       if (nameController.text.isNotEmpty &&
           phoneNumberController.text.isNotEmpty) {
         context.read<AdminBloc>().add(
               AddAdminEvent(
                 adminModel: adminModel,
-                imageFile: pickedFile,
+                imageFile: Provider.of<AdminBloc>(context, listen: false)
+                    .state
+                    .pickedFile,
               ),
             );
       }

@@ -6,6 +6,7 @@ import 'package:official_chatbox_admin_application/features/presentation/widgets
 import 'package:official_chatbox_admin_application/features/presentation/widgets/common_widgets/text_widget_common.dart';
 import 'package:official_chatbox_admin_application/features/presentation/widgets/reported_users/reported_users_stream_list_view.dart';
 import 'package:official_chatbox_admin_application/features/presentation/widgets/reported_users/reported_users_table_title.dart';
+
 class ReportedAccountsPage extends StatefulWidget {
   const ReportedAccountsPage({super.key});
 
@@ -26,6 +27,7 @@ class _ReportedAccountsPageState extends State<ReportedAccountsPage> {
       body: LayoutBuilder(
         builder: (context, constraints) {
           final isSmallScreen = constraints.maxWidth < 600;
+          final isMidOverScreen = constraints.maxWidth < 845;
 
           return Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -51,12 +53,14 @@ class _ReportedAccountsPageState extends State<ReportedAccountsPage> {
                   ),
                   child: Column(
                     children: [
-                      reportedUsersTableTitle(
-                        context: context,
-                        isSmallScreen: isSmallScreen,
-                      ),
+                      if (!isMidOverScreen)
+                        reportedUsersTableTitle(
+                          context: context,
+                          isSmallScreen: isSmallScreen,
+                        ),
                       Expanded(
                         child: reportedUsersStreamListview(
+                          isMidOverScreen: isMidOverScreen,
                           isSmallScreen: isSmallScreen,
                         ),
                       ),
@@ -70,6 +74,4 @@ class _ReportedAccountsPageState extends State<ReportedAccountsPage> {
       ),
     );
   }
-
-
 }

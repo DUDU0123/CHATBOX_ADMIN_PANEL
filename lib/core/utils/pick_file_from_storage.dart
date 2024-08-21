@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:typed_data';
 import 'package:file_picker/file_picker.dart';
 
@@ -14,7 +13,6 @@ Future<Uint8List?> pickOneFile() async {
       return null;
     }
   } catch (e) {
-    log("File picker exception");
     throw Exception(e);
   }
 }

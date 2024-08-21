@@ -1,7 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
-import 'dart:io';
-import 'dart:math';
 import 'dart:typed_data';
 import 'package:country_picker/country_picker.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -24,8 +21,6 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
     on<AddAdminEvent>(addAdminEvent);
     on<AdminSignInEvent>(adminSignInEvent);
     on<CountrySelectedEvent>(countrySelectedEvent);
-    on<EnableUserEvent>(enableUserEvent);
-    on<DisableUserEvent>(disableUserEvent);
     on<GetAllAdminsEvent>(getAllAdminsEvent);
     on<ImagePickEvent>(imagePickEvent);
     on<GetCurrentAdminData>(getCurrentAdminData);
@@ -37,39 +32,39 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
 
   Future<FutureOr<void>> adminSignInEvent(
       AdminSignInEvent event, Emitter<AdminState> emit) async {
-    emit(AdminLoadingState());
     try {
-      // RegExp phoneRegExp =
-      //     RegExp(r'^\+?(\d{1,3})?[-. ]?(\(?\d{3}\)?)[-. ]?\d{3}[-. ]?\d{4}$');
-      // if (phoneRegExp.hasMatch(event.phoneNumber)) {
-      final value = await adminRepository.signInWithPhoneNumber(
-        context: event.context,
-        phoneNumber: event.phoneNumber,
-      );
-      if (value) {
-        final adminData = await CommonDbFunctions.getAdminByNumber(
-            phoneNumber: event.phoneNumber);
-        add(GetCurrentAdminNumberEvent(number: event.phoneNumber));
-        if (adminData != null) {
-          add(GetCurrentAdminData(phoneNumber: event.phoneNumber));
+      RegExp phoneRegExp =
+          RegExp(r'^\+?(\d{1,3})?[-. ]?(\(?\d{3}\)?)[-. ]?\d{3}[-. ]?\d{4}$');
+      if (phoneRegExp.hasMatch(event.phoneNumber)) {
+        final value = await adminRepository.signInWithPhoneNumber(
+          context: event.context,
+          phoneNumber: event.phoneNumber,
+        );
+        if (value) {
+          final adminData = await CommonDbFunctions.getAdminByNumber(
+              phoneNumber: event.phoneNumber);
+          // add(GetCurrentAdminNumberEvent(number: event.phoneNumber));
+          if (adminData != null) {
+            await CommonDbFunctions.saveAdminData(adminData);
+            add(GetCurrentAdminData(phoneNumber: event.phoneNumber));
+          } else {
+            commonSnackBarWidget(
+              context: event.context,
+              contentText: "No admin found",
+            );
+          }
         } else {
           commonSnackBarWidget(
             context: event.context,
-            contentText: "No admin found",
+            contentText: "Invalid credential or error occured",
           );
         }
       } else {
         commonSnackBarWidget(
           context: event.context,
-          contentText: "Invalid credential or error occured",
+          contentText: "Enter correct phone number",
         );
       }
-      // } else {
-      //   commonSnackBarWidget(
-      //     context: event.context,
-      //     contentText: "Enter correct phone number",
-      //   );
-      // }
     } catch (e) {
       emit(AdminErrorState(errorMessage: e.toString()));
     }
@@ -83,8 +78,11 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
         profileImageFile: event.imageFile,
       );
       if (value) {
-        emit(AdminState(
-            message: "Created successfully", country: state.country));
+        emit(state.copyWith(
+          message: "Created successfully",
+          country: state.country,
+          currentAdminData: state.currentAdminData,
+        ));
       } else {
         emit(
           AdminErrorState(
@@ -102,33 +100,7 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
     emit(AdminState(country: event.selectedCountry));
   }
 
-  FutureOr<void> enableUserEvent(
-      EnableUserEvent event, Emitter<AdminState> emit) async {
-    try {
-      final value = await adminRepository.enableUser(userId: event.userId);
-      if (value) {
-        emit(AdminState(message: 'Enabled successfully'));
-      } else {
-        emit(AdminErrorState(errorMessage: "Unable to enable user"));
-      }
-    } catch (e) {
-      emit(AdminErrorState(errorMessage: "Something went wrong"));
-    }
-  }
 
-  Future<FutureOr<void>> disableUserEvent(
-      DisableUserEvent event, Emitter<AdminState> emit) async {
-    try {
-      final value = await adminRepository.disableUser(userId: event.userId);
-      if (value) {
-        emit(AdminState(message: 'Disabled successfully'));
-      } else {
-        emit(AdminErrorState(errorMessage: "Unable to disable user"));
-      }
-    } catch (e) {
-      emit(AdminErrorState(errorMessage: "Unable to disable user"));
-    }
-  }
 
   Future<FutureOr<void>> imagePickEvent(
       ImagePickEvent event, Emitter<AdminState> emit) async {
@@ -136,8 +108,7 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
       final pickedFile = await pickOneFile();
       if (pickedFile != null) {
         emit(state.copyWith(
-          pickedFile: pickedFile,
-        ));
+            pickedFile: pickedFile, currentAdminData: state.currentAdminData));
       } else {
         emit(AdminErrorState(errorMessage: "Unable to pick image"));
       }
@@ -146,11 +117,18 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
     }
   }
 
-  FutureOr<void> getAllAdminsEvent(
-      GetAllAdminsEvent event, Emitter<AdminState> emit) {
+  Future<FutureOr<void>> getAllAdminsEvent(
+      GetAllAdminsEvent event, Emitter<AdminState> emit) async {
     try {
       final adminsList = adminRepository.getAllAdmins();
-      emit(state.copyWith(adminsList: adminsList));
+      emit(state.copyWith(
+        adminsList: adminsList,
+        currentAdminData: await CommonDbFunctions.getSavedAdminData(),
+        adminNumber: state.adminNumber,
+        isAdminSignedIn: state.isAdminSignedIn,
+        pickedFile: state.pickedFile,
+        country: state.country,
+      ));
     } catch (e) {
       emit(AdminErrorState(errorMessage: "Something went wrong"));
     }
@@ -159,9 +137,10 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
   FutureOr<void> getCurrentAdminData(
       GetCurrentAdminData event, Emitter<AdminState> emit) async {
     try {
-      final adminData = await CommonDbFunctions.getAdminByNumber(
-          phoneNumber: event.phoneNumber);
-      emit(state.copyWith(currentAdminData: adminData));
+      emit(state.copyWith(
+        currentAdminData: await CommonDbFunctions.getSavedAdminData(),
+        adminNumber: state.adminNumber,
+      ));
     } catch (e) {
       emit(AdminErrorState(errorMessage: "No admin"));
     }
@@ -173,9 +152,12 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
     emit(state.copyWith(isAdminSignedIn: isSignedIn));
   }
 
-  FutureOr<void> getCurrentAdminNumberEvent(
-      GetCurrentAdminNumberEvent event, Emitter<AdminState> emit) {
-    emit(state.copyWith(adminNumber: event.number));
+  Future<FutureOr<void>> getCurrentAdminNumberEvent(
+      GetCurrentAdminNumberEvent event, Emitter<AdminState> emit) async {
+    emit(state.copyWith(
+      adminNumber: event.number,
+      currentAdminData: await CommonDbFunctions.getSavedAdminData(),
+    ));
   }
 
   FutureOr<void> updateAdminEvent(
@@ -185,6 +167,9 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
           profileImageFile: event.imageFile,
           updatedModel: event.updatedAdminModel);
       if (value) {
+        final adminData = await CommonDbFunctions.getAdminById(
+            adminId: event.updatedAdminModel.id);
+        await CommonDbFunctions.saveAdminData(adminData);
         add(GetAllAdminsEvent());
       } else {
         emit(AdminErrorState(errorMessage: "Unable to edit profile"));

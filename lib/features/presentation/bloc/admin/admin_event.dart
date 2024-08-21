@@ -17,7 +17,7 @@ class AddAdminEvent extends AdminEvent {
   @override
   List<Object> get props => [
         adminModel,
-        imageFile ?? File(''),
+        imageFile ?? Uint8List(0),
       ];
 }
 
@@ -46,24 +46,6 @@ class CountrySelectedEvent extends AdminEvent {
       ];
 }
 
-class EnableUserEvent extends AdminEvent {
-  final String userId;
-  const EnableUserEvent({
-    required this.userId,
-  });
-  @override
-  List<Object> get props => [userId];
-}
-
-class DisableUserEvent extends AdminEvent {
-  final String userId;
-  const DisableUserEvent({
-    required this.userId,
-  });
-  @override
-  List<Object> get props => [userId];
-}
-
 class ImagePickEvent extends AdminEvent {}
 
 class GetAllAdminsEvent extends AdminEvent {}
@@ -74,7 +56,9 @@ class GetCurrentAdminData extends AdminEvent {
     required this.phoneNumber,
   });
   @override
-  List<Object> get props => [phoneNumber];
+  List<Object> get props => [
+        phoneNumber,
+      ];
 }
 
 class CheckIfAdminSignedInEvent extends AdminEvent {
@@ -88,7 +72,9 @@ class GetCurrentAdminNumberEvent extends AdminEvent {
     required this.number,
   });
   @override
-  List<Object> get props => [number];
+  List<Object> get props => [
+        number,
+      ];
 }
 
 class UpdateAdminEvent extends AdminEvent {

@@ -28,12 +28,16 @@ BlocBuilder<AdminBloc, AdminState> currentAdminDataShowWidget({
           ),
           kHeight15,
           TextWidgetCommon(
+            textAlign: TextAlign.center,
+            overflow: TextOverflow.ellipsis,
             text: state.currentAdminData?.adminName ?? 'No admin',
             fontWeight: FontWeight.bold,
             textColor: kWhite,
             fontSize: responsiveFontSize(context: context, baseSize: 30),
           ),
           TextWidgetCommon(
+            textAlign: TextAlign.center,
+            overflow: TextOverflow.ellipsis,
             text: state.currentAdminData?.adminMobileNumber ?? 'No number',
             fontWeight: FontWeight.bold,
             textColor: kWhite,

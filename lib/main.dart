@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
-
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -27,8 +25,5 @@ Future<void> main() async {
       const RootWidgetPage(),
     );
   }, (error, stackTrace) {
-    // Handle the error and stack trace here
-    log('Caught unhandled error: $error');
-    log('Stack trace: $stackTrace');
   });
 }

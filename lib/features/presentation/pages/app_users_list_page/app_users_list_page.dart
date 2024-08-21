@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:official_chatbox_admin_application/config/all_bloc_provider.dart';
 import 'package:official_chatbox_admin_application/core/constants/colors.dart';
-import 'package:official_chatbox_admin_application/core/constants/database_constants.dart';
 import 'package:official_chatbox_admin_application/features/presentation/bloc/user/user_bloc.dart';
 import 'package:official_chatbox_admin_application/features/presentation/widgets/admin_home/navigation_widgets.dart';
 import 'package:official_chatbox_admin_application/features/presentation/widgets/app_users/app_users_stream_listview.dart';
@@ -31,6 +29,7 @@ class _AppUsersListPageState extends State<AppUsersListPage> {
       body: LayoutBuilder(
         builder: (context, constraints) {
           final isSmallScreen = constraints.maxWidth < 600;
+          final isMidOverScreen = constraints.maxWidth < 845;
 
           return Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -55,6 +54,8 @@ class _AppUsersListPageState extends State<AppUsersListPage> {
                           if (searchInput.isNotEmpty) {
                             context.read<UserBloc>().add(
                                 SearchUsersEvent(searchInput: value.trim()));
+                          } else {
+                            context.read<UserBloc>().add(GetAllUsersEvent());
                           }
                         },
                         textColor: kWhite,
@@ -81,12 +82,14 @@ class _AppUsersListPageState extends State<AppUsersListPage> {
                   ),
                   child: Column(
                     children: [
-                      appUsersTableTitle(
-                        context: context,
-                        isSmallScreen: isSmallScreen,
-                      ),
+                      if (!isMidOverScreen)
+                        appUsersTableTitle(
+                          context: context,
+                          isSmallScreen: isSmallScreen,
+                        ),
                       Expanded(
                         child: appUsersStreamListview(
+                          isMidOverScreen: isMidOverScreen,
                           isSmallScreen: isSmallScreen,
                         ),
                       ),

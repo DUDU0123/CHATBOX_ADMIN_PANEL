@@ -16,3 +16,20 @@ class SearchUsersEvent extends UserEvent {
   @override
   List<Object> get props => [searchInput,];
 }
+class EnableUserEvent extends UserEvent {
+  final String userId;
+  const EnableUserEvent({
+    required this.userId,
+  });
+  @override
+  List<Object> get props => [userId];
+}
+
+class DisableUserEvent extends UserEvent {
+  final String userId;
+  const DisableUserEvent({
+    required this.userId,
+  });
+  @override
+  List<Object> get props => [userId];
+}

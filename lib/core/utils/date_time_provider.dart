@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -17,7 +15,6 @@ class DateProvider {
     return formattedDate;
   } catch (e) {
     // If parsing fails, log the error and return a default value
-    log('Error parsing date: $date. Error: ${e.toString()}');
     return 'Date not available';
   }
 }
