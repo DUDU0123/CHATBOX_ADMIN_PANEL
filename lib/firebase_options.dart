@@ -3,6 +3,7 @@
 import 'package:firebase_core/firebase_core.dart' show FirebaseOptions;
 import 'package:flutter/foundation.dart'
     show defaultTargetPlatform, kIsWeb, TargetPlatform;
+import 'package:official_chatbox_admin_application/config/imp_keys/service_keys.dart';
 
 /// Default [FirebaseOptions] for use with your Firebase apps.
 ///
@@ -53,11 +54,11 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyA1ICAy3Bl-2_GRxiVp9yMxxwnGxBekgdM',
-    appId: '1:641647769517:web:9295d158eb1662e7705324',
-    messagingSenderId: '641647769517',
-    projectId: 'new-chat-box-social-app',
-    authDomain: 'new-chat-box-social-app.firebaseapp.com',
-    storageBucket: 'new-chat-box-social-app.appspot.com',
+    apiKey: apiKey,
+    appId: appId,
+    messagingSenderId: messagingSenderId,
+    projectId: projectId,
+    authDomain: authDomain,
+    storageBucket: storageBucket,
   );
 }

@@ -62,6 +62,7 @@ BlocBuilder<AdminBloc, AdminState> adminsStreamListview() {
                                       ),
                                     )
                                 : null;
+                                Navigator.pop(context);
                           },
                           actionButtonName: "Remove",
                         );
