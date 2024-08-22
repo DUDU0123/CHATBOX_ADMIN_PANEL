@@ -16,7 +16,8 @@ Widget buildSettingsContent({
     width: screenWidth(context: context),
     margin: const EdgeInsets.all(15),
     padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-    decoration: containerBoxDecoration(),
+    decoration:
+        screenWidth(context: context) > 700 ? containerBoxDecoration() : null,
     child: Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,

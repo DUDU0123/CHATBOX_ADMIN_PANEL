@@ -23,7 +23,7 @@ Widget gridViewShowWidget({
 }) {
   return Container(
     width: isSmallScreen ? 150 : 200, // Provide width constraint
-    padding: const EdgeInsets.all(8.0),
+    padding: const EdgeInsets.only(top: 8, right: 8, left: 8),
     decoration: BoxDecoration(
       border: Border.all(color: Colors.grey),
       borderRadius: BorderRadius.circular(10),

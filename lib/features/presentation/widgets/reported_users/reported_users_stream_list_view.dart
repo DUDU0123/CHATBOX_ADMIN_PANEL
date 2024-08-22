@@ -81,7 +81,6 @@ BlocBuilder<UserBloc, UserState> reportedUsersStreamListview({
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisSpacing: 10,
                         mainAxisSpacing: 10,
-                        // childAspectRatio: null,
                         crossAxisCount: isSmallScreen ? 2 : 3),
                     itemBuilder: (context, index) {
                       return gridViewShowWidget(

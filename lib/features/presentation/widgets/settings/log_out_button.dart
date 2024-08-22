@@ -11,17 +11,8 @@ ElevatedButton logOutButton({
   required BuildContext context,
 }) {
   return ElevatedButton.icon(
-    onPressed: () async {
-      await CommonDbFunctions.setUserAuthStatus(isSignedIn: false);
-      if (ismounted) {
-        Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const AdminLoginPage(),
-          ),
-          (route) => false,
-        );
-      }
+    onPressed: () {
+      logOutMethod(ismounted: ismounted, context: context,);
     },
     style: buttonStyle(),
     icon: const Icon(
@@ -35,4 +26,20 @@ ElevatedButton logOutButton({
       fontSize: responsiveFontSize(context: context, baseSize: 25),
     ),
   );
+}
+
+void logOutMethod({
+  required bool ismounted,
+  required BuildContext context,
+}) async {
+  await CommonDbFunctions.setUserAuthStatus(isSignedIn: false);
+  if (ismounted) {
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const AdminLoginPage(),
+      ),
+      (route) => false,
+    );
+  }
 }

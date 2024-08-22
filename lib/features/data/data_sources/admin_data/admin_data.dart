@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:official_chatbox_admin_application/core/constants/database_constants.dart';
+import 'package:official_chatbox_admin_application/core/utils/common_animation_widget.dart';
 import 'package:official_chatbox_admin_application/core/utils/common_db_functions.dart';
 
 import 'package:official_chatbox_admin_application/core/utils/common_snackbar_widget.dart';
@@ -147,6 +148,13 @@ class AdminData {
           actions: [
             TextButton(
               onPressed: () async {
+                showDialog(
+                  context: context,
+                  builder: (context) => commonAnimationWidget(
+                    context: context,
+                    isTextNeeded: false,
+                  ),
+                );
                 final value = await verifyOtp(
                   context: context,
                   verificationId: verificationId,
@@ -174,7 +182,6 @@ class AdminData {
     );
   }
 
-
   Future<bool> editProfileData({
     required AdminModel updatedModel,
     Uint8List? profileImageFile,
@@ -188,7 +195,9 @@ class AdminData {
         );
       }
       final updatedAdminModel = updatedModel.copyWith(
-        profilePhoto: profileImageUrl!=null&&profileImageUrl.isNotEmpty? profileImageUrl:updatedModel.profilePhoto,
+        profilePhoto: profileImageUrl != null && profileImageUrl.isNotEmpty
+            ? profileImageUrl
+            : updatedModel.profilePhoto,
       );
       await firebaseFirestore
           .collection(adminsCollection)

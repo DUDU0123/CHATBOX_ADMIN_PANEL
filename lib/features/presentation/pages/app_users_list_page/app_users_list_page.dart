@@ -47,7 +47,7 @@ class _AppUsersListPageState extends State<AppUsersListPage> {
                       textColor: kWhite,
                     ),
                     SizedBox(
-                      width: responsiveWidth(context, 300),
+                      width: responsiveWidth(context, 180),
                       child: responsiveField(
                         onChanged: (value) async {
                           String searchInput = value.trim();

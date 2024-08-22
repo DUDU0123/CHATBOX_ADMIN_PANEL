@@ -4,6 +4,7 @@ import 'package:country_picker/country_picker.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:official_chatbox_admin_application/core/utils/common_animation_widget.dart';
 import 'package:official_chatbox_admin_application/core/utils/common_db_functions.dart';
 import 'package:official_chatbox_admin_application/core/utils/common_snackbar_widget.dart';
 import 'package:official_chatbox_admin_application/core/utils/pick_file_from_storage.dart';
@@ -36,10 +37,18 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
       RegExp phoneRegExp =
           RegExp(r'^\+?(\d{1,3})?[-. ]?(\(?\d{3}\)?)[-. ]?\d{3}[-. ]?\d{4}$');
       if (phoneRegExp.hasMatch(event.phoneNumber)) {
+        showDialog(
+          context: event.context,
+          builder: (context) => commonAnimationWidget(
+            context: context,
+            isTextNeeded: false,
+          ),
+        );
         final value = await adminRepository.signInWithPhoneNumber(
           context: event.context,
           phoneNumber: event.phoneNumber,
         );
+
         if (value) {
           final adminData = await CommonDbFunctions.getAdminByNumber(
               phoneNumber: event.phoneNumber);
@@ -99,8 +108,6 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
       CountrySelectedEvent event, Emitter<AdminState> emit) {
     emit(AdminState(country: event.selectedCountry));
   }
-
-
 
   Future<FutureOr<void>> imagePickEvent(
       ImagePickEvent event, Emitter<AdminState> emit) async {

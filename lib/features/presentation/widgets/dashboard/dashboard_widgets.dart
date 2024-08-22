@@ -22,21 +22,25 @@ Widget dashboardWelcomNoteAndIcon({
           textColor: kWhite,
         ),
       ),
-      BlocBuilder<AdminBloc, AdminState>(
-        builder: (context, state) {
-          return CircleAvatar(
-            radius: 20,
-            backgroundColor: kWhite,
-            child: state.currentAdminData != null
-                ? state.currentAdminData!.profilePhoto != null
-                    ? Image.network(state.currentAdminData!.profilePhoto!)
-                    : const Icon(Icons.person, color: kLightGreenColor,)
-                : const Icon(Icons.person, color: kGreenBlack,),
-          );
-        },
-      )
+      currentAdminProfileIcon()
     ],
   );
+}
+
+BlocBuilder<AdminBloc, AdminState> currentAdminProfileIcon() {
+  return BlocBuilder<AdminBloc, AdminState>(
+      builder: (context, state) {
+        return CircleAvatar(
+          radius: 20,
+          backgroundColor: kWhite,
+          child: state.currentAdminData != null
+              ? state.currentAdminData!.profilePhoto != null
+                  ? Image.network(state.currentAdminData!.profilePhoto!)
+                  : const Icon(Icons.person, color: kLightGreenColor,)
+              : const Icon(Icons.person, color: kGreenBlack,),
+        );
+      },
+    );
 }
 
 Widget dashBoardAppDetailGiveContainer({
