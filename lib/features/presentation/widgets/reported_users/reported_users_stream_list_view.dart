@@ -1,19 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:official_chatbox_admin_application/core/constants/height_width.dart';
+import 'package:official_chatbox_admin_application/core/utils/common_snackbar_widget.dart';
 import 'package:official_chatbox_admin_application/core/utils/date_time_provider.dart';
 import 'package:official_chatbox_admin_application/features/data/models/user_model/user_model.dart';
 import 'package:official_chatbox_admin_application/features/presentation/bloc/user/user_bloc.dart';
 import 'package:official_chatbox_admin_application/features/presentation/widgets/common_widgets/grid_view_show_widgets.dart';
 import 'package:official_chatbox_admin_application/features/presentation/widgets/common_widgets/small_widgets.dart';
 import 'package:official_chatbox_admin_application/features/presentation/widgets/common_widgets/tile_container_widget.dart';
-import 'package:official_chatbox_admin_application/features/presentation/widgets/common_widgets/user_tile_row_widget.dart';
 
-BlocBuilder<UserBloc, UserState> reportedUsersStreamListview({
+BlocConsumer<UserBloc, UserState> reportedUsersStreamListview({
   required bool isSmallScreen,
   required bool isMidOverScreen,
 }) {
-  return BlocBuilder<UserBloc, UserState>(
+  return BlocConsumer<UserBloc, UserState>(
+    listener: (context, state) {
+      if (state is UserErrorState) {
+        commonSnackBarWidget(context: context, contentText: state.errorMessage);
+      }
+      if (state.message!=null) {
+         commonSnackBarWidget(context: context, contentText: state.message!);
+      }
+      
+    },
     builder: (context, state) {
       return StreamBuilder<List<UserModel>>(
         stream: state.reportedAccounts,

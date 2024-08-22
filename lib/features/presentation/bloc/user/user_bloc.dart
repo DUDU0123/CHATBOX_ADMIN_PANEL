@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:official_chatbox_admin_application/config/all_bloc_provider.dart';
 import 'package:official_chatbox_admin_application/core/constants/database_constants.dart';
+import 'package:official_chatbox_admin_application/core/utils/common_db_functions.dart';
+import 'package:official_chatbox_admin_application/features/data/models/report_model/report_model.dart';
 import 'package:official_chatbox_admin_application/features/data/models/user_model/user_model.dart';
 import 'package:official_chatbox_admin_application/features/domain/repositories/user_repo/user_repository.dart';
 import 'package:rxdart/rxdart.dart';
@@ -53,13 +55,42 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   FutureOr<void> getAllReportedAccountsEvent(
       GetAllReportedAccountsEvent event, Emitter<UserState> emit) {
     try {
-      final Stream<List<UserModel>>? reportedAccounts =
-          userRepository.getAllReportedAccountsInDB();
+      final Stream<List<ReportModel>>? reportedAccounts =
+          userRepository.getAllReportedAccountsFromDB();
+      // Transform the reportedAccounts stream into a stream of user models
+      final Stream<List<UserModel>>? reportedUserStream =
+          reportedAccounts?.asyncMap((reportList) async {
+        // Fetch all user models based on reportedUserId in the reportList
+        final List<UserModel> users = await Future.wait(
+          reportList
+              .map((report) async {
+                final userStream =
+                    CommonDbFunctions.getOneUserDataFromDataBaseAsStream(
+                        userId: report.reportedUserId!);
+
+                // Fetch the first event from the user stream and handle null values
+                final UserModel? userModel = await userStream.first;
+
+                // Handle the case where userModel might be null
+                if (userModel != null) {
+                  return userModel;
+                } else {
+                  throw Exception(
+                      "User with ID ${report.reportedUserId} not found.");
+                }
+              })
+              .whereType<Future<UserModel>>()
+              .toList(), // Ensure the list contains non-null UserModel futures
+        );
+
+        return users;
+      });
+
       emit(
         UserState(
           usersList: state.usersList,
           disabledUsersList: state.disabledUsersList,
-          reportedAccounts: reportedAccounts,
+          reportedAccounts: reportedUserStream,
         ),
       );
     } catch (e) {

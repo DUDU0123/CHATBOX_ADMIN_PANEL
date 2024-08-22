@@ -1,10 +1,13 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:official_chatbox_admin_application/config/all_bloc_provider.dart';
 import 'package:official_chatbox_admin_application/core/constants/database_constants.dart';
 import 'package:official_chatbox_admin_application/features/data/models/admin_model/admin_model.dart';
+import 'package:official_chatbox_admin_application/features/data/models/report_model/report_model.dart';
+import 'package:official_chatbox_admin_application/features/data/models/user_model/user_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CommonDbFunctions {
@@ -43,7 +46,6 @@ class CommonDbFunctions {
       TaskSnapshot taskSnapshot = await uploadTask;
       return await taskSnapshot.ref.getDownloadURL();
     } on FirebaseException catch (e) {
-
       throw Exception("Error while saving file to storage: $e");
     } catch (e) {
       throw Exception("Error while saving file to storage: $e");
@@ -85,6 +87,26 @@ class CommonDbFunctions {
       return null;
     } catch (e) {
       return null;
+    }
+  }
+
+  //get one user data as stream
+  static Stream<UserModel?> getOneUserDataFromDataBaseAsStream(
+      {required String userId}) {
+    try {
+      return fireStore.collection(usersCollection).doc(userId).snapshots().map(
+            (event) => UserModel.fromJson(
+              map: event.data() ?? {},
+            ),
+          );
+    } on FirebaseException catch (e) {
+      log(
+        'Firebase Auth exception: $e',
+      );
+      throw Exception("Error while fetching user data: $e");
+    } catch (e, stackTrace) {
+      log('Error while fetching user data: $e', stackTrace: stackTrace);
+      throw Exception("Error while fetching user data: $e");
     }
   }
 }

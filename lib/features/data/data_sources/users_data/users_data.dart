@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:official_chatbox_admin_application/core/constants/database_constants.dart';
+import 'package:official_chatbox_admin_application/features/data/models/report_model/report_model.dart';
 import 'package:official_chatbox_admin_application/features/data/models/user_model/user_model.dart';
 
 class UsersData {
@@ -51,7 +52,7 @@ class UsersData {
     }
   }
 
-  Stream<List<UserModel>>? getAllReportedAccountsFromDB() {
+  Stream<List<ReportModel>>? getAllReportedAccountsFromDB() {
     try {
       return firebaseFirestore
           .collection(reportedUsersCollection)
@@ -59,8 +60,8 @@ class UsersData {
           .map((userSnapshot) {
         return userSnapshot.docs
             .map(
-              (doc) => UserModel.fromJson(
-                map: doc.data(),
+              (doc) => ReportModel.fromJson(
+                doc.data(),
               ),
             )
             .toList();
@@ -72,7 +73,7 @@ class UsersData {
     }
   }
 
-    Future<bool> disableUser({
+  Future<bool> disableUser({
     required String userId,
   }) async {
     try {
