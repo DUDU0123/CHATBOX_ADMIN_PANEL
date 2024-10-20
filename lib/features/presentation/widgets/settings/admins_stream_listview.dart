@@ -28,7 +28,7 @@ BlocBuilder<AdminBloc, AdminState> adminsStreamListview() {
               return emptyShowWidget(context: context, text: "No admins found");
             }
             return ListView.separated(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
               itemBuilder: (context, index) {
                 return ListTile(
                   tileColor: kTransparent,
@@ -38,6 +38,7 @@ BlocBuilder<AdminBloc, AdminState> adminsStreamListview() {
                         )
                       : defaultContainerIcon(),
                   title: TextWidgetCommon(
+                    overflow: TextOverflow.ellipsis,
                     text: adminList[index].adminName ?? '',
                     fontSize: responsiveFontSize(
                       context: context,

@@ -14,48 +14,52 @@ BlocBuilder<AdminBloc, AdminState> currentAdminDataShowWidget({
 }) {
   return BlocBuilder<AdminBloc, AdminState>(
     builder: (context, state) {
-      return Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          kHeight15,
-          profileImageShowCircularWidget(
-            defaultContainerColor: kWhite,
-            userProfileImage: state.currentAdminData?.profilePhoto,
-            context: context,
-            borderRadius: 300,
-            containerSize: 200,
-            defaultContainerConstraint: 200,
+      return ScrollConfiguration(
+          behavior:
+                ScrollConfiguration.of(context).copyWith(scrollbars: false),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              profileImageShowCircularWidget(
+                defaultContainerColor: kWhite,
+                userProfileImage: state.currentAdminData?.profilePhoto,
+                context: context,
+                borderRadius: 300,
+                containerSize: 200,
+                defaultContainerConstraint: 200,
+              ),
+              kHeight15,
+              TextWidgetCommon(
+                textAlign: TextAlign.center,
+                overflow: TextOverflow.ellipsis,
+                text: state.currentAdminData?.adminName ?? 'No admin',
+                fontWeight: FontWeight.bold,
+                textColor: kWhite,
+                fontSize: responsiveFontSize(context: context, baseSize: 30),
+              ),
+              TextWidgetCommon(
+                textAlign: TextAlign.center,
+                overflow: TextOverflow.ellipsis,
+                text: state.currentAdminData?.adminEmailAddress ?? 'No number',
+                fontWeight: FontWeight.bold,
+                textColor: kWhite,
+                fontSize: responsiveFontSize(context: context, baseSize: 30),
+              ),
+              kHeight10,
+              editProfileButton(
+                currentModel: state.currentAdminData,
+                ismounted: ismounted,
+                context: context,
+              ),
+              kHeight15,
+              logOutButton(
+                ismounted: ismounted,
+                context: context,
+              ),
+            ],
           ),
-          kHeight15,
-          TextWidgetCommon(
-            textAlign: TextAlign.center,
-            overflow: TextOverflow.ellipsis,
-            text: state.currentAdminData?.adminName ?? 'No admin',
-            fontWeight: FontWeight.bold,
-            textColor: kWhite,
-            fontSize: responsiveFontSize(context: context, baseSize: 30),
-          ),
-          TextWidgetCommon(
-            textAlign: TextAlign.center,
-            overflow: TextOverflow.ellipsis,
-            text: state.currentAdminData?.adminMobileNumber ?? 'No number',
-            fontWeight: FontWeight.bold,
-            textColor: kWhite,
-            fontSize: responsiveFontSize(context: context, baseSize: 30),
-          ),
-          kHeight10,
-          editProfileButton(
-            currentModel: state.currentAdminData,
-            ismounted: ismounted,
-            context: context,
-          ),
-          kHeight15,
-          logOutButton(
-            ismounted: ismounted,
-            context: context,
-          ),
-          
-        ],
+        ),
       );
     },
   );

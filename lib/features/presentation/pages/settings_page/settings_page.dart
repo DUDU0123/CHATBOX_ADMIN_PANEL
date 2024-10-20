@@ -36,11 +36,9 @@ class _SettingsPageState extends State<SettingsPage> {
           textColor: kWhite,
         ),
         actions: [
-          screenWidth(context: context) < 700
-              ? smallScreenAdminSettings(
+              smallScreenAdminSettings(
                   mounted: mounted,
                 )
-              : zeroMeasuredWidget,
         ],
       ),
       backgroundColor: kAdminHomeScaffoldColor,

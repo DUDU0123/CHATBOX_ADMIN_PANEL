@@ -3,13 +3,15 @@ import 'package:equatable/equatable.dart';
 class AdminEntity extends Equatable {
   final String? id;
   final String? adminName;
-  final String? adminMobileNumber;
+  final String? adminPassword;
+  final String? adminEmailAddress;
   final String? profilePhoto;
   final String? adminAccountCreatedAt;
   const AdminEntity({
     this.id,
     this.adminName,
-    this.adminMobileNumber,
+    this.adminPassword,
+    this.adminEmailAddress,
     this.profilePhoto,
     this.adminAccountCreatedAt,
   });
@@ -19,7 +21,8 @@ class AdminEntity extends Equatable {
     return [
       id,
       adminName,
-      adminMobileNumber,
+      adminPassword,
+      adminEmailAddress,
       profilePhoto,
       adminAccountCreatedAt,
     ];

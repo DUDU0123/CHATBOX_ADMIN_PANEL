@@ -28,63 +28,74 @@ Widget gridViewShowWidget({
       border: Border.all(color: Colors.grey),
       borderRadius: BorderRadius.circular(10),
     ),
-    child: Column(
-      mainAxisSize: MainAxisSize.min, // Take up minimum vertical space
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
+    child: Stack(
+      alignment: Alignment.center,
       children: [
-        profileImageShowCircularWidget(
-          containerSize: 60,
-          context: context,
-          userProfileImage: userProfileImage,
-        ),
-        const SizedBox(height: 10),
-        commonText(
-          userPhoneNumber: userName,
-          context: context,
-          isSmallScreen: isSmallScreen,
-          isTitle: isTitle,
-        ),
-        commonText(
-          userPhoneNumber: userPhoneNumber,
-          context: context,
-          isSmallScreen: isSmallScreen,
-          isTitle: isTitle,
-        ),
-        commonText(
-          userPhoneNumber: userJoinedDate,
-          context: context,
-          isSmallScreen: isSmallScreen,
-          isTitle: isTitle,
-        ),
-        if (!isTitle && (isDisabledUserList || isReportedUsersList))
-          Expanded(
-            child: GestureDetector(
-              onTap: () {
-                if (user != null) {
-                  if (isDisabledUserList) {
-                    if (user.id != null) {
-                      context
-                          .read<UserBloc>()
-                          .add(EnableUserEvent(userId: user.id!));
-                    }
-                  } else {
-                    if (user.id != null) {
-                      context
-                          .read<UserBloc>()
-                          .add(DisableUserEvent(userId: user.id!));
-                    }
-                  }
-                }
-              },
-              child: Chip(
-                label: TextWidgetCommon(
-                  text: isDisabledUserList ? "Enable" : "Disable",
-                  fontSize: responsiveFontSize(context: context, baseSize: 13),
-                ),
-              ),
+        Column(
+          mainAxisSize: MainAxisSize.min, // Take up minimum vertical space
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            profileImageShowCircularWidget(
+              containerSize: 60,
+              context: context,
+              userProfileImage: userProfileImage,
             ),
+            const SizedBox(height: 10),
+            commonText(
+              userPhoneNumber: userName,
+              context: context,
+              isSmallScreen: isSmallScreen,
+              isTitle: isTitle,
+            ),
+            commonText(
+              userPhoneNumber: userPhoneNumber,
+              context: context,
+              isSmallScreen: isSmallScreen,
+              isTitle: isTitle,
+            ),
+            commonText(
+              userPhoneNumber: userJoinedDate,
+              context: context,
+              isSmallScreen: isSmallScreen,
+              isTitle: isTitle,
+            ),
+          ],
+        ),
+          if (!isTitle && (isDisabledUserList || isReportedUsersList))
+        Positioned(
+          top: 0,right: 0,
+          child: PopupMenuButton(
+            itemBuilder: (context) {
+              return [
+                PopupMenuItem(
+                  onTap: () {
+                    if (user != null) {
+                      if (isDisabledUserList) {
+                        if (user.id != null) {
+                          context
+                              .read<UserBloc>()
+                              .add(EnableUserEvent(userId: user.id!));
+                        }
+                      } else {
+                        if (user.id != null) {
+                          context
+                              .read<UserBloc>()
+                              .add(DisableUserEvent(userId: user.id!));
+                        }
+                      }
+                    }
+                  },
+                  child:  TextWidgetCommon(
+                      text: isDisabledUserList ? "Enable" : "Disable",
+                      fontSize:
+                          responsiveFontSize(context: context, baseSize: 13),
+                    ),
+                ),
+              ];
+            },
           ),
+        )
       ],
     ),
   );

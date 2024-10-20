@@ -66,12 +66,12 @@ class CommonDbFunctions {
     }
   }
 
-  static Future<AdminModel?> getAdminByNumber(
-      {required String phoneNumber}) async {
+  static Future<AdminModel?> getAdminByEmail(
+      {required String email}) async {
     try {
       QuerySnapshot querySnapshot = await fireStore
           .collection(adminsCollection)
-          .where(adminPhoneNumber, isEqualTo: phoneNumber)
+          .where(adminEmail, isEqualTo: email)
           .limit(1)
           .get();
 

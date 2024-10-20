@@ -22,27 +22,18 @@ class AddAdminEvent extends AdminEvent {
 }
 
 class AdminSignInEvent extends AdminEvent {
-  final String phoneNumber;
+  final String email;
+  final String password;
   final BuildContext context;
   const AdminSignInEvent({
-    required this.phoneNumber,
+    required this.email,
+    required this.password,
     required this.context,
   });
   @override
   List<Object> get props => [
-        phoneNumber,
+        email,password,
         context,
-      ];
-}
-
-class CountrySelectedEvent extends AdminEvent {
-  final Country selectedCountry;
-  const CountrySelectedEvent({
-    required this.selectedCountry,
-  });
-  @override
-  List<Object> get props => [
-        selectedCountry,
       ];
 }
 
@@ -51,13 +42,13 @@ class ImagePickEvent extends AdminEvent {}
 class GetAllAdminsEvent extends AdminEvent {}
 
 class GetCurrentAdminData extends AdminEvent {
-  final String phoneNumber;
+  final String email;
   const GetCurrentAdminData({
-    required this.phoneNumber,
+    required this.email,
   });
   @override
   List<Object> get props => [
-        phoneNumber,
+        email,
       ];
 }
 
@@ -65,18 +56,6 @@ class CheckIfAdminSignedInEvent extends AdminEvent {
   @override
   List<Object> get props => [];
 }
-
-class GetCurrentAdminNumberEvent extends AdminEvent {
-  final String number;
-  const GetCurrentAdminNumberEvent({
-    required this.number,
-  });
-  @override
-  List<Object> get props => [
-        number,
-      ];
-}
-
 class UpdateAdminEvent extends AdminEvent {
   final AdminModel updatedAdminModel;
   final Uint8List? imageFile;

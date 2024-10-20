@@ -29,18 +29,29 @@ Widget dashboardWelcomNoteAndIcon({
 
 BlocBuilder<AdminBloc, AdminState> currentAdminProfileIcon() {
   return BlocBuilder<AdminBloc, AdminState>(
-      builder: (context, state) {
-        return CircleAvatar(
-          radius: 20,
-          backgroundColor: kWhite,
-          child: state.currentAdminData != null
-              ? state.currentAdminData!.profilePhoto != null
-                  ? Image.network(state.currentAdminData!.profilePhoto!)
-                  : const Icon(Icons.person, color: kLightGreenColor,)
-              : const Icon(Icons.person, color: kGreenBlack,),
-        );
-      },
-    );
+    builder: (context, state) {
+      return CircleAvatar(
+        radius: 20,
+        backgroundColor: kWhite,
+        child: state.currentAdminData != null
+            ? state.currentAdminData!.profilePhoto != null
+                ? ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                    child: Image.network(
+                    state.currentAdminData!.profilePhoto!,
+                    fit: BoxFit.cover,
+                  ))
+                : const Icon(
+                    Icons.person,
+                    color: kLightGreenColor,
+                  )
+            : const Icon(
+                Icons.person,
+                color: kGreenBlack,
+              ),
+      );
+    },
+  );
 }
 
 Widget dashBoardAppDetailGiveContainer({

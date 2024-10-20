@@ -14,18 +14,6 @@ class AdminRepoImpl extends AdminRepository {
   Future<bool> addAdmin({required AdminModel adminModel, Uint8List? profileImageFile,}) {
     return adminData.addAdmin(adminModel: adminModel, profileImageFile: profileImageFile,);
   }
-
-  @override
-  Future<bool> signInWithPhoneNumber({
-    required BuildContext context,
-    required String phoneNumber,
-  }) {
-    return adminData.signInWithPhoneNumber(
-      context: context,
-      phoneNumber: phoneNumber,
-    );
-  }
-  
   @override
   Stream<List<AdminModel>>? getAllAdmins() {
     return adminData.getAllAdminsFromDB();
@@ -40,4 +28,11 @@ class AdminRepoImpl extends AdminRepository {
   Future<bool> removeAdmin({required String adminId}) {
     return adminData.removeAdmin(adminId: adminId);
   }
+  
+  @override
+  Future<bool> adminSignInWithEmailAndPassword({required BuildContext context, required String email, required String password}) {
+    return adminData.signInWithPhoneNumber(context: context,email: email, password: password);
+  }
+  
+ 
 }

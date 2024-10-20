@@ -47,9 +47,11 @@ class _AdminEditProfileBoxState extends State<AdminEditProfileBox> {
               kHeight10,
               pickedImageShowWIdget(),
               kHeight15,
-              nameEnterField(
+              valueEnterField(
+                keyboardType: TextInputType.text,
+                hintText: "Enter name",
                 dialogWidth: widget.dialogWidth,
-                nameController: nameController,
+                controller: nameController,
                 context: context,
               ),
               kHeight10,

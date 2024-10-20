@@ -3,12 +3,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:official_chatbox_admin_application/core/constants/database_constants.dart';
-import 'package:official_chatbox_admin_application/core/utils/common_animation_widget.dart';
 import 'package:official_chatbox_admin_application/core/utils/common_db_functions.dart';
-
-import 'package:official_chatbox_admin_application/core/utils/common_snackbar_widget.dart';
 import 'package:official_chatbox_admin_application/features/data/models/admin_model/admin_model.dart';
-import 'package:official_chatbox_admin_application/features/presentation/pages/main_navigate_page/main_navigation_page.dart';
 
 class AdminData {
   final FirebaseFirestore firebaseFirestore;
@@ -71,115 +67,33 @@ class AdminData {
       return null;
     }
   }
-
-  // Method to start phone number verification for admins only
   Future<bool> signInWithPhoneNumber({
     required BuildContext context,
-    required String phoneNumber,
+    required String email,
+    required String password,
   }) async {
     try {
       QuerySnapshot adminQuerySnapshot = await firebaseFirestore
           .collection(adminsCollection)
-          .where(adminPhoneNumber, isEqualTo: phoneNumber)
+          .where(adminEmail, isEqualTo: email)
           .get();
+
       if (adminQuerySnapshot.docs.isEmpty) {
         return false;
       }
-
-      await fireBaseAuth.verifyPhoneNumber(
-        phoneNumber: phoneNumber,
-        verificationCompleted: (PhoneAuthCredential credential) async {
-          await fireBaseAuth.signInWithCredential(credential);
-        },
-        verificationFailed: (FirebaseAuthException e) {
-          commonSnackBarWidget(
-            context: context,
-            contentText: 'Verification failed: ${e.message}',
-          );
-        },
-        codeSent: (String verificationId, int? resendToken) {
-          showOtpDialog(context: context, verificationId: verificationId);
-        },
-        codeAutoRetrievalTimeout: (String verificationId) {},
-      );
-      return true;
+      var adminDoc = adminQuerySnapshot.docs.first;
+      String dbPassword = adminDoc[adminPasswordDB];
+      if (dbPassword == password) {
+        return true;
+      } else {
+        return false;
+      }
     } on FirebaseAuthException catch (e) {
       return false;
     } catch (e) {
+      // Handle any other errors
       return false;
     }
-  }
-
-  // Method to manually sign in using OTP after user input
-  Future<bool> verifyOtp({
-    required BuildContext context,
-    required String verificationId,
-    required String otp,
-  }) async {
-    try {
-      PhoneAuthCredential credential = PhoneAuthProvider.credential(
-        verificationId: verificationId,
-        smsCode: otp,
-      );
-      await fireBaseAuth.signInWithCredential(credential);
-      return true;
-    } on FirebaseAuthException catch (e) {
-      return false;
-    } catch (e) {
-      return false;
-    }
-  }
-
-  void showOtpDialog({
-    required BuildContext context,
-    required String verificationId,
-  }) {
-    TextEditingController otpController = TextEditingController();
-
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: const Text('Enter OTP'),
-          content: TextField(
-            controller: otpController,
-            decoration: const InputDecoration(labelText: 'OTP'),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () async {
-                showDialog(
-                  context: context,
-                  builder: (context) => commonAnimationWidget(
-                    context: context,
-                    isTextNeeded: false,
-                  ),
-                );
-                final value = await verifyOtp(
-                  context: context,
-                  verificationId: verificationId,
-                  otp: otpController.text,
-                );
-
-                if (value) {
-                  await CommonDbFunctions.setUserAuthStatus(isSignedIn: true);
-                  Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const MainNavigationPage(),
-                    ),
-                    (route) => false,
-                  );
-                } else {
-                  return;
-                }
-              },
-              child: const Text('Verify'),
-            ),
-          ],
-        );
-      },
-    );
   }
 
   Future<bool> editProfileData({

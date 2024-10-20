@@ -8,7 +8,8 @@ import 'package:official_chatbox_admin_application/features/presentation/widgets
 
 Widget adminLoginFormWidget({
   required BuildContext context,
-  required TextEditingController phoneNumberController,
+  required TextEditingController emailController,
+  required TextEditingController passwordController,
 }) {
   return Row(
     crossAxisAlignment: CrossAxisAlignment.center,
@@ -36,10 +37,18 @@ Widget adminLoginFormWidget({
                 context: context,
               ),
               kHeight20,
-              responsiveTextField(
+              responsiveField(
                 keyboardType: TextInputType.phone,
-                hintText: "Enter phone number",
-                controller: phoneNumberController,
+                hintText: "Enter email",
+                controller: emailController,
+                context: context,
+                fontSize: 22,
+              ),
+              kHeight10,
+              responsiveField(
+                keyboardType: TextInputType.phone,
+                hintText: "Enter password",
+                controller: passwordController,
                 context: context,
                 fontSize: 22,
               ),
@@ -47,16 +56,10 @@ Widget adminLoginFormWidget({
               responsiveButton(
                 onTap: () {
                   final adminBloc = context.read<AdminBloc>();
-                  final String? countryCode =
-                      adminBloc.state.country?.phoneCode;
-                  final mobileNumber = phoneNumberController.text.trim();
-                  final String phoneNumber =
-                      countryCode != null && countryCode.isNotEmpty
-                          ? "+$countryCode$mobileNumber"
-                          : "+91 $mobileNumber";
                   adminBloc.add(
                     AdminSignInEvent(
-                      phoneNumber: phoneNumber,
+                      email: emailController.text,
+                      password: passwordController.text,
                       context: context,
                     ),
                   );

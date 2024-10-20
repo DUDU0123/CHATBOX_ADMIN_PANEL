@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 import 'dart:typed_data';
 import 'package:country_picker/country_picker.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,6 +11,8 @@ import 'package:official_chatbox_admin_application/core/utils/common_snackbar_wi
 import 'package:official_chatbox_admin_application/core/utils/pick_file_from_storage.dart';
 import 'package:official_chatbox_admin_application/features/data/models/admin_model/admin_model.dart';
 import 'package:official_chatbox_admin_application/features/domain/repositories/admin_repo/admin_repository.dart';
+import 'package:official_chatbox_admin_application/features/presentation/pages/main_navigate_page/main_navigation_page.dart';
+import 'package:official_chatbox_admin_application/features/root_widget_page.dart';
 
 part 'admin_event.dart';
 part 'admin_state.dart';
@@ -21,12 +24,10 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
   }) : super(AdminInitial()) {
     on<AddAdminEvent>(addAdminEvent);
     on<AdminSignInEvent>(adminSignInEvent);
-    on<CountrySelectedEvent>(countrySelectedEvent);
     on<GetAllAdminsEvent>(getAllAdminsEvent);
     on<ImagePickEvent>(imagePickEvent);
     on<GetCurrentAdminData>(getCurrentAdminData);
     on<CheckIfAdminSignedInEvent>(checkIfAdminSignedInEvent);
-    on<GetCurrentAdminNumberEvent>(getCurrentAdminNumberEvent);
     on<UpdateAdminEvent>(updateAdminEvent);
     on<DeleteAdminEvent>(deleteAdminEvent);
   }
@@ -34,9 +35,9 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
   Future<FutureOr<void>> adminSignInEvent(
       AdminSignInEvent event, Emitter<AdminState> emit) async {
     try {
-      RegExp phoneRegExp =
-          RegExp(r'^\+?(\d{1,3})?[-. ]?(\(?\d{3}\)?)[-. ]?\d{3}[-. ]?\d{4}$');
-      if (phoneRegExp.hasMatch(event.phoneNumber)) {
+      final RegExp emailRegExp =
+          RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
+      if (emailRegExp.hasMatch(event.email)) {
         showDialog(
           context: event.context,
           builder: (context) => commonAnimationWidget(
@@ -44,34 +45,42 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
             isTextNeeded: false,
           ),
         );
-        final value = await adminRepository.signInWithPhoneNumber(
+        final value = await adminRepository.adminSignInWithEmailAndPassword(
           context: event.context,
-          phoneNumber: event.phoneNumber,
+          email: event.email,
+          password: event.password,
         );
-
+        if (!value) {
+          commonSnackBarWidget(
+            context: event.context,
+            contentText: "Invalid credential or error occured",
+          );
+          navigatorKey?.currentState?.pop();
+        }
+        log(value.toString());
         if (value) {
-          final adminData = await CommonDbFunctions.getAdminByNumber(
-              phoneNumber: event.phoneNumber);
-          // add(GetCurrentAdminNumberEvent(number: event.phoneNumber));
+          final adminData =
+              await CommonDbFunctions.getAdminByEmail(email: event.email);
           if (adminData != null) {
+            navigatorKey?.currentState?.pushAndRemoveUntil(
+              MaterialPageRoute(
+                builder: (context) => const MainNavigationPage(),
+              ),
+              (route) => false,
+            );
             await CommonDbFunctions.saveAdminData(adminData);
-            add(GetCurrentAdminData(phoneNumber: event.phoneNumber));
+            add(GetCurrentAdminData(email: event.email));
           } else {
             commonSnackBarWidget(
               context: event.context,
               contentText: "No admin found",
             );
           }
-        } else {
-          commonSnackBarWidget(
-            context: event.context,
-            contentText: "Invalid credential or error occured",
-          );
         }
       } else {
         commonSnackBarWidget(
           context: event.context,
-          contentText: "Enter correct phone number",
+          contentText: "Enter valid email",
         );
       }
     } catch (e) {
@@ -102,11 +111,6 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
     } catch (e) {
       emit(AdminErrorState(errorMessage: e.toString()));
     }
-  }
-
-  FutureOr<void> countrySelectedEvent(
-      CountrySelectedEvent event, Emitter<AdminState> emit) {
-    emit(AdminState(country: event.selectedCountry));
   }
 
   Future<FutureOr<void>> imagePickEvent(
@@ -157,14 +161,6 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
       CheckIfAdminSignedInEvent event, Emitter<AdminState> emit) async {
     final isSignedIn = await CommonDbFunctions.getUserAthStatus();
     emit(state.copyWith(isAdminSignedIn: isSignedIn));
-  }
-
-  Future<FutureOr<void>> getCurrentAdminNumberEvent(
-      GetCurrentAdminNumberEvent event, Emitter<AdminState> emit) async {
-    emit(state.copyWith(
-      adminNumber: event.number,
-      currentAdminData: await CommonDbFunctions.getSavedAdminData(),
-    ));
   }
 
   FutureOr<void> updateAdminEvent(
